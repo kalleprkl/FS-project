@@ -1,15 +1,17 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { removeFromContainer } from '../actions/containerActions'
 
-const ItemContainer = ({ container }) => {
+const ItemContainer = ({ container, removeFromContainer }) => {
+
     return (
         <div>
             {'['}
             {container.map(item =>
-                <div>
+                <div onClick={() => removeFromContainer(item)}>
                     {'{'}
-                    {Object.keys(item).map(key =>
-                        <p>{`${key}: ${item[key]},`}</p>
+                    {Object.keys(item.object).map(key =>
+                        <p>{`${key}: ${item.object[key]},`}</p>
                     )}
                     {'},'}
                 </div>
@@ -25,4 +27,8 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(ItemContainer)
+const mapActionToProps = {
+    removeFromContainer
+}
+
+export default connect(mapStateToProps, mapActionToProps)(ItemContainer)

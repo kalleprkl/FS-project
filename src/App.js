@@ -25,9 +25,7 @@ class App extends Component {
               <ItemContainer />
             </Grid.Column>
             {this.props.endpoints.map(e =>
-              
                 <Endpoint endpoint={e} />
-              
             )}
           </Grid.Row>
         </Grid>
@@ -42,9 +40,9 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapActionsToProps = {
+const mapActionToProps = {
   addToContainer,
   initEndpoint
 }
 
-export default connect(mapStateToProps, mapActionsToProps)(App)
+export default connect(mapStateToProps, mapActionToProps)(App)

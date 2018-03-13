@@ -6,22 +6,18 @@ import { Grid } from 'semantic-ui-react'
 
 const Endpoint = ({ endpoint, addToContainer }) => {
 
-    const handleClick = (item) => () => {
-        addToContainer(item)
-    }
-
     return (
         <Grid.Column width={4}>
             {'['}
-            {endpoint.content.map(item => {
+            {endpoint.items.map(item => {
                 return (
-                    <div onClick={handleClick(item)}>
+                    <div onClick={() => addToContainer(item)}>
                         {'{'}
-                        {Object.keys(item).map(key => 
-                            <p>{`${key}: ${item[key]},`}</p>
+                        {Object.keys(item.object).map(key =>
+                            <p>{`${key}: ${item.object[key]},`}</p>
                         )}
                         {'},'}
-                    </div>    
+                    </div>
                 )
             }
             )}
@@ -30,8 +26,8 @@ const Endpoint = ({ endpoint, addToContainer }) => {
     )
 }
 
-const mapActionsToProps = {
+const mapActionToProps = {
     addToContainer: addToContainer
 }
 
-export default connect(null, mapActionsToProps)(Endpoint)
+export default connect(null, mapActionToProps)(Endpoint)

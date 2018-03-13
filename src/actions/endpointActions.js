@@ -6,12 +6,18 @@ export const initEndpoint = (url) => {
     return async (dispatch) => {
         try {
             const content = await endpointService.get(url)
-            
+            const items = content.map(object => {
+                return {
+                    id : getId(),
+                    object
+                }    
+            })
             dispatch({
                 type: 'ENDPOINT_INIT',
                 payload: {
+                    id: getId(),
                     url,
-                    content: content.map(item => item.id = getId())
+                    items
                 }
             })
         } catch (exception) {   
