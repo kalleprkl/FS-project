@@ -11,7 +11,7 @@ const ItemContainer = ({ container, removeFromContainer }) => {
                 <div onClick={() => removeFromContainer(item)}>
                     {'{'}
                     {Object.keys(item.object).map(key =>
-                        <p>{`${key}: ${item.object[key]},`}</p>
+                        <p style={{ margin: 1 }}>{`${key}: ${item.object[key]},`}</p>
                     )}
                     {'},'}
                 </div>
