@@ -4,35 +4,75 @@ import { connect } from 'react-redux'
 import { addToContainer } from './actions/containerActions'
 import { initEndpoint } from './actions/endpointActions'
 
-import { Container, Grid, Image, Rail, Segment  } from 'semantic-ui-react'
+import { Container, Grid, Image, Rail, Segment } from 'semantic-ui-react'
 import ItemContainer from './components/itemContainer'
 import Endpoint from './components/endpoint'
 
 class App extends Component {
 
   componentDidMount() {
-    this.props.initEndpoint('https://www.reddit.com/r/Suomi/search.json?q=kissa&limit=5')
+    //this.props.initEndpoint('https://www.reddit.com/r/Suomi/search.json?q=kissa&limit=5')
     //this.props.initEndpoint('https://jsonplaceholder.typicode.com/comments')
     //this.props.initEndpoint('https://jsonplaceholder.typicode.com/users')
   }
 
   render() {
+
     return (
       <Container>
-        <Grid celled>
-          <Grid.Row columns={this.props.endpoints.length + 1}>
-            <Grid.Column color={'black'}>
+        <Grid centered>
+          <Segment>
+            <Rail position='left'>
+              <Segment>Left Rail Content</Segment>
+            </Rail>
+            <Grid.Column width={7} >
               <ItemContainer />
             </Grid.Column>
-            {this.props.endpoints.map(e =>
-                <Endpoint endpoint={e} />
-            )}
-          </Grid.Row>
+            <Rail position='right'>
+              <Segment>Right Rail Content</Segment>
+            </Rail>
+          </Segment>
         </Grid>
       </Container>
-    );
+    )
+
+    /*<Container>
+        <Grid centered columns={3}>
+          <Grid.Column>
+            <Segment width={1}>
+              <Rail position='left'>
+                <Segment>Left Rail Content</Segment>
+              </Rail>
+              <Grid.Column width={6} >
+                <ItemContainer />
+              </Grid.Column>
+              <Rail position='right'>
+                <Segment>Right Rail Content</Segment>
+              </Rail>
+            </Segment>
+          </Grid.Column>
+        </Grid>
+      </Container>*/
   }
 }
+
+const RailExampleRail = () => (
+  <Grid centered columns={3}>
+    <Grid.Column>
+      <Segment>
+        <Image src='/assets/images/wireframe/paragraph.png' />
+
+        <Rail position='left'>
+          <Segment>Left Rail Content</Segment>
+        </Rail>
+
+        <Rail position='right'>
+          <Segment>Right Rail Content</Segment>
+        </Rail>
+      </Segment>
+    </Grid.Column>
+  </Grid>
+)
 
 /*const App = () => (
   <div>

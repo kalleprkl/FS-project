@@ -1,5 +1,20 @@
 
-const containerReducer = (state = [], { type, payload }) => {
+const initialState = [
+    {},
+    {
+        source: 'youtube',
+        url: 'https://www.youtube.com/embed/Kc2kFk5M9x4'
+    },
+    {
+        source: 'reddit'
+    },
+    {
+        source: 'facebook'
+    },
+    {},{}
+]
+
+const containerReducer = (state = initialState, { type, payload }) => {
     switch (type) {
         case 'CONTAINER_ADD':
             return [...state, payload]
