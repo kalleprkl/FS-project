@@ -5,7 +5,7 @@ import { removeFromContainer } from '../actions/containerActions'
 const ItemContainer = ({ container, removeFromContainer }) => {
 
     return (
-        <div>
+        <div name='kakka'>
             {'['}
             {container.map(item =>
                 <div onClick={() => removeFromContainer(item)}>

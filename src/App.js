@@ -11,9 +11,9 @@ import Endpoint from './components/endpoint'
 class App extends Component {
 
   componentDidMount() {
-    this.props.initEndpoint('https://jsonplaceholder.typicode.com/posts')
-    this.props.initEndpoint('https://jsonplaceholder.typicode.com/comments')
-    this.props.initEndpoint('https://jsonplaceholder.typicode.com/users')
+    this.props.initEndpoint('https://www.reddit.com/r/Suomi/search.json?q=kissa&limit=5')
+    //this.props.initEndpoint('https://jsonplaceholder.typicode.com/comments')
+    //this.props.initEndpoint('https://jsonplaceholder.typicode.com/users')
   }
 
   render() {
