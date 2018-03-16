@@ -8,9 +8,23 @@ import { Container, Grid, Image, Rail, Segment } from 'semantic-ui-react'
 import ItemContainer from './components/itemContainer'
 import Endpoint from './components/endpoint'
 
+import axios from 'axios'
+
 class App extends Component {
 
   componentDidMount() {
+
+    
+
+    const init = async () => {
+      const url = await axios.get('http://localhost:5000/yt')
+      const data = await axios.get('http://localhost:5000/yt/data')
+      this.props.initEndpoint(data.data)
+      //console.log(data.data)
+    }
+
+    init()
+
     //this.props.initEndpoint('https://www.reddit.com/r/Suomi/search.json?q=kissa&limit=5')
     //this.props.initEndpoint('https://jsonplaceholder.typicode.com/comments')
     //this.props.initEndpoint('https://jsonplaceholder.typicode.com/users')

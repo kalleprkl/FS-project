@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { removeFromContainer } from '../actions/containerActions'
 
 const ItemContainer = ({ container, removeFromContainer }) => {
-
+    //console.log(container)
     return (
         <div>
             {container.map(item => {
@@ -19,6 +19,8 @@ const border = {
 }
 
 const player = (item) => {
+    console.log(item.object.snippet.resourceId.videoId)
+    const id = item.object.snippet.resourceId.videoId
     return (
         <div style={{ margin: 20 }}>
             <iframe
@@ -28,7 +30,7 @@ const player = (item) => {
                 height="270"
                 id="player"
                 type="text/html"
-                src={item.url}
+                src={`https://www.youtube.com/embed/${id}`}
                 frameborder="0"
             ></iframe>
         </div>
