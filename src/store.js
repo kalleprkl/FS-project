@@ -2,11 +2,11 @@ import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import containerReducer from './reducers/containerReducer'
-import endpointeReducer from './reducers/endpointReducer'
+import apiReducer from './reducers/apiReducer'
 
 const reducer = (combineReducers({
     container: containerReducer,
-    endpoints: endpointeReducer
+    apis: apiReducer
 }))
 
 const store = createStore(

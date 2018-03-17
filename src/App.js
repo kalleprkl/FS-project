@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 import { addToContainer } from './actions/containerActions'
-import { initEndpoint } from './actions/endpointActions'
+import { initApi } from './actions/apiActions'
 
 import GoogleLogin from 'react-google-login'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
@@ -34,7 +34,7 @@ class App extends Component {
     try {
       const initYoutube = async () => {
         const response = await axios.get('http://localhost:5000/yt/data')
-        this.props.initEndpoint(response.data)
+        this.props.initApi('youtube',response.data)
       }
       initYoutube()
     } catch (exception) {
@@ -77,7 +77,7 @@ const mapStateToProps = (state) => {
 
 const mapActionToProps = {
   addToContainer,
-  initEndpoint
+  initApi
 }
 
 export default connect(mapStateToProps, mapActionToProps)(App)

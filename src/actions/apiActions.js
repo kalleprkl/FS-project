@@ -1,8 +1,8 @@
-import endpointService from '../services/endpoints'
+import apiService from '../services/apis'
 
 const getId = () => (100000*Math.random()).toFixed(0)
 
-export const initEndpoint = (content) => {
+export const initApi = (source, content) => {
     return async (dispatch) => {
         try {
             //const content = await endpointService.get(url)
@@ -19,7 +19,7 @@ export const initEndpoint = (content) => {
                 payload: {
                     id: getId(),
                     url: '',
-                    source: 'youtube',
+                    source,
                     items
                 }
             })
@@ -28,7 +28,7 @@ export const initEndpoint = (content) => {
                 payload: items
             })
         } catch (exception) {   
-            console.log('endpoint init failed')
+            console.log('api init failed')
         }
     }
 }
