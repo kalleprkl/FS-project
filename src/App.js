@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 
 import { addToContainer } from './actions/containerActions'
 import { initApi } from './actions/apiActions'
+import { getAuthLink } from './actions/authLinkActions'
 
 import GoogleLogin from 'react-google-login'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
@@ -13,33 +14,9 @@ import axios from 'axios'
 
 class App extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      url: ''
-    };
-  }
-
   componentDidMount() {
-    try {
-      const initAuthPath = async () => {
-        const response = await axios.get('http://localhost:5000/yt')
-        this.setState({ url: response.data })
-      }
-      initAuthPath()
-    } catch (exception) {
-      //console.log(exception)
-    }
-
-    try {
-      const initYoutube = async () => {
-        const response = await axios.get('http://localhost:5000/yt/data')
-        this.props.initApi('youtube',response.data)
-      }
-      initYoutube()
-    } catch (exception) {
-      console.log('youtube init failed')
-    }
+    this.props.getAuthLink('http://localhost:5000/yt', 'youtube')
+    this.props.initApi('http://localhost:5000/yt/data', 'youtube')
   }
 
   render() {
@@ -51,7 +28,7 @@ class App extends Component {
             <Segment>
               <Rail position='left'>
                 <Segment>
-                  <a href={this.state.url || ''} >youtube</a>
+                  <a href={this.props.authLinks.youtube || ''} >youtube</a>
                 </Segment>
               </Rail>
               <Grid.Column width={7} >
@@ -71,13 +48,14 @@ class App extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    endpoints: state.endpoints
+    authLinks: state.authLinks
   }
 }
 
 const mapActionToProps = {
   addToContainer,
-  initApi
+  initApi,
+  getAuthLink
 }
 
 export default connect(mapStateToProps, mapActionToProps)(App)

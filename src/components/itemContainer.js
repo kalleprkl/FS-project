@@ -1,12 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { removeFromContainer } from '../actions/containerActions'
+import Youtube from './youtube'
 
-const ItemContainer = ({ container, removeFromContainer }) => {
-    //console.log(container)
+const ItemContainer = ({ itemContainer, removeFromContainer }) => {
     return (
         <div>
-            {container.map(item => {
+            {itemContainer.map(item => {
                 return createItem(item)
             })}
         </div>
@@ -18,30 +18,10 @@ const border = {
     borderWidth: '1px'
 }
 
-const player = (item) => {
-    //console.log(item.object.snippet.resourceId.videoId)
-    const id = item.object.snippet.resourceId.videoId
-    const url = `https://www.youtube.com/embed/${id}`
-    return (
-        <div style={{ margin: 20 }}>
-            <iframe
-                id='player'
-                position='fixed'
-                width="480"
-                height="270"
-                id="player"
-                type="text/html"
-                src={url}
-                frameborder="0"
-            ></iframe>
-        </div>
-    )
-}
-
 const createItem = (item) => {
     switch (item.source) {
         case 'youtube':
-            return player(item)
+            return <Youtube item={item} />
         case 'facebook':
             return <p style={border}>facebook</p>
         case 'reddit':
@@ -53,7 +33,7 @@ const createItem = (item) => {
 
 const mapStateToProps = (state) => {
     return {
-        container: state.container
+        itemContainer: state.itemContainer
     }
 }
 

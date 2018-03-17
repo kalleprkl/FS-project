@@ -1,12 +1,14 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
-import containerReducer from './reducers/containerReducer'
+import itemContainerReducer from './reducers/itemContainerReducer'
 import apiReducer from './reducers/apiReducer'
+import authLinkReducer from './reducers/authLinkReducer'
 
 const reducer = (combineReducers({
-    container: containerReducer,
-    apis: apiReducer
+    itemContainer: itemContainerReducer,
+    apis: apiReducer,
+    authLinks: authLinkReducer
 }))
 
 const store = createStore(

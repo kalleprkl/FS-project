@@ -2,23 +2,21 @@ import apiService from '../services/apis'
 
 const getId = () => (100000*Math.random()).toFixed(0)
 
-export const initApi = (source, content) => {
+export const initApi = (url, source) => {
     return async (dispatch) => {
         try {
-            //const content = await endpointService.get(url)
+            const content = await apiService.get(url)
             const items = content.map(object => {
                 return {
                     id : getId(),
-                    source: 'youtube',
+                    source,
                     object
                 }    
             })
-            //console.log(items)
             dispatch({
                 type: 'ENDPOINT_INIT',
                 payload: {
                     id: getId(),
-                    url: '',
                     source,
                     items
                 }
