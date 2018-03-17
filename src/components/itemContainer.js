@@ -19,7 +19,7 @@ const border = {
 }
 
 const player = (item) => {
-    console.log(item.object.snippet.resourceId.videoId)
+    //console.log(item.object.snippet.resourceId.videoId)
     const id = item.object.snippet.resourceId.videoId
     const url = `https://www.youtube.com/embed/${id}`
     return (
