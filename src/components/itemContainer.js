@@ -21,6 +21,7 @@ const border = {
 const player = (item) => {
     console.log(item.object.snippet.resourceId.videoId)
     const id = item.object.snippet.resourceId.videoId
+    const url = `https://www.youtube.com/embed/${id}`
     return (
         <div style={{ margin: 20 }}>
             <iframe
@@ -30,7 +31,7 @@ const player = (item) => {
                 height="270"
                 id="player"
                 type="text/html"
-                src={`https://www.youtube.com/embed/${id}`}
+                src={url}
                 frameborder="0"
             ></iframe>
         </div>

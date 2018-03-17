@@ -4,7 +4,8 @@ import { connect } from 'react-redux'
 import { addToContainer } from './actions/containerActions'
 import { initEndpoint } from './actions/endpointActions'
 
-import { Container, Grid, Image, Rail, Segment } from 'semantic-ui-react'
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import { Container, Grid, Image, Rail, Segment, a } from 'semantic-ui-react'
 import ItemContainer from './components/itemContainer'
 import Endpoint from './components/endpoint'
 
@@ -12,41 +13,59 @@ import axios from 'axios'
 
 class App extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      url: ''
+    };
+  }
+
   componentDidMount() {
 
-    
+    try {
+      const init = async () => {
+        const url = await axios.get('http://localhost:5000/yt')
+        this.setState({ url: url.data })
+        console.log(url)
+        //const data = await axios.get('http://localhost:5000/yt/data')
+        //this.props.initEndpoint(data.data)
+      }
+      init()
+    } catch (exception) {
 
-    const init = async () => {
-      const url = await axios.get('http://localhost:5000/yt')
-      const data = await axios.get('http://localhost:5000/yt/data')
-      this.props.initEndpoint(data.data)
-      //console.log(data.data)
     }
+  }
 
-    init()
-
-    //this.props.initEndpoint('https://www.reddit.com/r/Suomi/search.json?q=kissa&limit=5')
-    //this.props.initEndpoint('https://jsonplaceholder.typicode.com/comments')
-    //this.props.initEndpoint('https://jsonplaceholder.typicode.com/users')
+  youtubeInit = () => {
+    console.log('INIT')
   }
 
   render() {
 
     return (
       <Container>
-        <Grid centered>
-          <Segment>
-            <Rail position='left'>
-              <Segment>Left Rail Content</Segment>
-            </Rail>
-            <Grid.Column width={7} >
-              <ItemContainer />
-            </Grid.Column>
-            <Rail position='right'>
-              <Segment>Right Rail Content</Segment>
-            </Rail>
-          </Segment>
-        </Grid>
+        <Router>
+          <Grid centered>
+            <Segment>
+              <Rail position='left'>
+                <Segment>
+                  <button onClick={this.youtubeInit}>
+                    <a href={this.state.url || ''} style={{ display: 'block', height: '100%' }} >youtube</a>
+                  </button>
+                  <button onClick={this.youtubeInit}>
+                    <Link to={this.state.url || ''} style={{ display: 'block', height: '100%' }}></Link>
+                  </button>
+                </Segment>
+              </Rail>
+              <Grid.Column width={7} >
+                <ItemContainer />
+              </Grid.Column>
+              <Rail position='right'>
+                <Segment>Right Rail Content</Segment>
+              </Rail>
+            </Segment>
+          </Grid>
+        </Router>
       </Container>
     )
 
