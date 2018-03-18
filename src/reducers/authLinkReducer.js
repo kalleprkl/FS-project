@@ -1,4 +1,4 @@
-const authLinkReducer = (state = { kakka: 'pissa' }, { type, payload }) => {
+const authLinkReducer = (state = {}, { type, payload }) => {
     switch (type) {
         case 'ADD_AUTH_LINK':
             let newObject = {}

@@ -1,11 +1,11 @@
 
-const endpointReducer = (state = [], { type, payload }) => {
+const apitReducer = (state = [], { type, payload }) => {
     switch (type) {
-        case 'ENDPOINT_INIT':
+        case 'API_INIT':
             return [...state, payload]
         default:
             return state
     }
 }
 
-export default endpointReducer
+export default apitReducer

@@ -14,7 +14,7 @@ export const initApi = (url, source) => {
                 }    
             })
             dispatch({
-                type: 'ENDPOINT_INIT',
+                type: 'API_INIT',
                 payload: {
                     id: getId(),
                     source,

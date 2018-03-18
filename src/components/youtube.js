@@ -13,7 +13,7 @@ const Youtube = ({ item }) => {
                 height="270"
                 type="text/html"
                 src={url}
-                frameborder="0"
+                frameBorder="0"
             ></iframe>
         </div>
     )
