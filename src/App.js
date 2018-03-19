@@ -11,39 +11,22 @@ import ItemContainer from './components/itemContainer'
 
 import axios from 'axios'
 
-let url = ''
-
 class App extends Component {
 
   componentDidMount() {
-    try {
-      const getRedditAuth = async () => {
-        const response = await axios.get('http://localhost:5000/r')
-        url = response.data 
-      }
-      getRedditAuth()
-    } catch (exception) {
-
-    }
-    try {
-      const getRedditData = async () => {
-        const response = await axios.get('http://localhost:5000/r/data')
-        console.log(response.data)
-        url = response.data 
-      }
-      getRedditData()
-    } catch (exception) {
-
-    }
     this.props.getAuthLink('http://localhost:5000/yt', 'youtube')
+    this.props.getAuthLink('http://localhost:5000/r', 'reddit')
     this.props.initApi('http://localhost:5000/yt/data', 'youtube')
+    this.props.initApi('http://localhost:5000/r/data', 'reddit')
   }
 
   render() {
 
     const fixed = {
-      minWidth:300, 
-      minHeight: 100
+      minWidth: 300, 
+      minHeight: 100,
+      //border: 'solid',
+      //margin: 50
     }
 
     return (
@@ -56,10 +39,10 @@ class App extends Component {
               <Segment>
                 <a href={this.props.authLinks.youtube || ''} >youtube</a>
                 <br/>
-                <a href={url} >reddit</a>
+                <a href={this.props.authLinks.reddit} >reddit</a>
               </Segment>
             </Rail>
-            <Grid.Column width={7} >
+            <Grid.Column textAlign='justified' width={7} >
               <ItemContainer />
             </Grid.Column>
             <Rail position='right'>
@@ -71,14 +54,6 @@ class App extends Component {
     )
   }
 }
-
-/*const redditWidget = () => {
-  const script = document.createElement("script")
-  script.src = "https://www.reddit.com/hot/.embed?limit=5&t=all"
-  script.type = "text/javascript"
-  script.async = true
-  document.getElementById('reddit').appendChild(script)
-}*/
 
 const mapStateToProps = (state) => {
   return {

@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { removeFromContainer } from '../actions/containerActions'
 import Youtube from './youtube'
+import Reddit from './reddit'
 
 const ItemContainer = ({ itemContainer, removeFromContainer }) => {
     return (
@@ -15,19 +16,31 @@ const ItemContainer = ({ itemContainer, removeFromContainer }) => {
 
 const border = {
     border: 'solid',
-    borderWidth: '1px'
+    borderWidth: '1px',
+    maxWidth: 500,
+    textAlign: 'left',
+    fontSize: 'small'
+    //margin: 20
+}
+
+const border2 = {
+    border: 'solid',
+    borderWidth: '1px',
+    maxWidth: 700,
+    textAlign: 'left',
+    //margin: 20
 }
 
 const createItem = (item) => {
     switch (item.source) {
         case 'youtube':
             return <Youtube key={item.id} item={item} />
+        case 'reddit':
+            return <Reddit key={item.id} item={item} />
         case 'facebook':
             return <p style={border}>facebook</p>
-        case 'reddit':
-            return <p style={border}>reddit</p>
         default:
-            return <p style={border}>emptiness..</p>
+            return <p style={border2}></p>
     }
 }
 
