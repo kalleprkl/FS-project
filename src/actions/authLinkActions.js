@@ -16,15 +16,17 @@ export const initAuthLinks = () => {
         toInit.map(async ({ source, url }) => {
             try {
                 const response = await authLinkService.get(url)
+                window.localStorage.setItem(`rf-${source}`, response.state)
                 dispatch({
                     type: 'ADD_AUTH_LINK',
                     payload: {
                         source,
-                        url: response
+                        url: response.authUrl
                     }
                 })
             } catch (exception) {
                 console.log('error while initializing links')
+                console.log(exception)
             }
         })
     }

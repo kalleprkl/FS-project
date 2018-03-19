@@ -8,6 +8,8 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import { Container, Grid, Rail, Segment } from 'semantic-ui-react'
 import ItemContainer from './components/itemContainer'
 
+import axios from 'axios'
+
 class App extends Component {
 
   componentDidMount() {
@@ -15,10 +17,14 @@ class App extends Component {
     this.props.initApis()
   }
 
+  handleClick = async () => {
+    const response = await axios.get('http://localhost:5000/yt/fart')
+    console.log(response)
+  }
   render() {
 
     const fixed = {
-      minWidth: 300, 
+      minWidth: 300,
       minHeight: 100,
       //border: 'solid',
       //margin: 50
@@ -33,7 +39,7 @@ class App extends Component {
             <Rail position='left'>
               <Segment>
                 <a href={this.props.authLinks.youtube || ''} >youtube</a>
-                <br/>
+                <br />
                 <a href={this.props.authLinks.reddit} >reddit</a>
               </Segment>
             </Rail>
@@ -41,7 +47,9 @@ class App extends Component {
               <ItemContainer />
             </Grid.Column>
             <Rail position='right'>
-              <Segment></Segment>
+              <Segment>
+                <button onClick={this.handleClick}>click</button>
+              </Segment>
             </Rail>
           </Segment>
         </Grid>

@@ -11,13 +11,13 @@ const toInit = [
     }
 ]
 
-
+//const kakka = { user: window.localStorage.getItem(`rf-${source}`) }
 
 export const initApis = () => {
     return (dispatch) => {
         toInit.map(async ({ source, url }) => {
             try {
-                const content = await apiService.get(url)
+                const content = await apiService.get(`${url}/${window.localStorage.getItem(`rf-${source}`)}`)
                 const items = content.map(object => {
                     return {
                         id: getId(),
