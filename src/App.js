@@ -11,15 +11,27 @@ import ItemContainer from './components/itemContainer'
 
 import axios from 'axios'
 
+let url = ''
+
 class App extends Component {
 
   componentDidMount() {
     try {
       const getRedditAuth = async () => {
         const response = await axios.get('http://localhost:5000/r')
-        console.log(response.data)
+        url = response.data 
       }
       getRedditAuth()
+    } catch (exception) {
+
+    }
+    try {
+      const getRedditData = async () => {
+        const response = await axios.get('http://localhost:5000/r/data')
+        console.log(response.data)
+        url = response.data 
+      }
+      getRedditData()
     } catch (exception) {
 
     }
@@ -43,6 +55,8 @@ class App extends Component {
             <Rail position='left'>
               <Segment>
                 <a href={this.props.authLinks.youtube || ''} >youtube</a>
+                <br/>
+                <a href={url} >reddit</a>
               </Segment>
             </Rail>
             <Grid.Column width={7} >
