@@ -1,23 +1,18 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { addToContainer } from './actions/containerActions'
-import { initApi } from './actions/apiActions'
+import { initApis } from './actions/apiActions'
 import { initAuthLinks } from './actions/authLinkActions'
 
 import { BrowserRouter as Router } from 'react-router-dom'
 import { Container, Grid, Rail, Segment } from 'semantic-ui-react'
 import ItemContainer from './components/itemContainer'
 
-import axios from 'axios'
-
 class App extends Component {
 
   componentDidMount() {
     this.props.initAuthLinks()
-
-    this.props.initApi('http://localhost:5000/yt/data', 'youtube')
-    this.props.initApi('http://localhost:5000/r/data', 'reddit')
+    this.props.initApis()
   }
 
   render() {
@@ -62,9 +57,8 @@ const mapStateToProps = (state) => {
 }
 
 const mapActionToProps = {
-  addToContainer,
-  initApi,
-  initAuthLinks
+  initAuthLinks,
+  initApis
 }
 
 export default connect(mapStateToProps, mapActionToProps)(App)
