@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-const get = async (url) => {
-    const response = await axios.get(url)
+const get = async (url, auth) => {
+    const response = await axios.get(url, { headers: { 'Authorization': auth } })
     return response.data
 }
 

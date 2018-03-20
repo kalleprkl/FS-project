@@ -41,7 +41,7 @@ class App extends Component {
                 <a href={this.props.authLinks.reddit} >reddit</a>
               </Segment>
             </Rail>
-            <Grid.Column textAlign='justified' width={7} >
+            <Grid.Column width={7} >
               <ItemContainer />
             </Grid.Column>
             <Rail position='right'>

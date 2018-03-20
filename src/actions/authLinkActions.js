@@ -15,8 +15,12 @@ export const initAuthLinks = () => {
     return (dispatch) => {
         toInit.map(async ({ source, url }) => {
             try {
-                const response = await authLinkService.get(url)
-                window.localStorage.setItem(`rf-${source}`, response.state)
+                const session = window.localStorage.getItem(`rf-${source}`)
+                console.log(session)
+                const response = await authLinkService.get(url, session)
+                if (!response.session) {
+                    window.localStorage.setItem(`rf-${source}`, response.state)
+                }
                 dispatch({
                     type: 'ADD_AUTH_LINK',
                     payload: {
