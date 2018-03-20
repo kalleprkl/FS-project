@@ -6,13 +6,28 @@ import Reddit from './reddit'
 
 const ItemContainer = ({ itemContainer, removeFromContainer }) => {
     return (
-        <div>
-            {itemContainer.map(item => {
-                return createItem(item)
-            })}
+        <div style={{ minHeight: 600, minWidth: 650 }}>
+            {itemContainer.length > 0 ?
+                itemContainer.map(item => {
+                    return createItem(item)}) 
+                : 
+                <div>give permits to fill feed</div>
+            }
         </div>
     )
 }
+
+const kjih = {
+    "fallback_url": "https://v.redd.it/97eh3gxjotm01/DASH_1_2_M",
+    "height": 360,
+    "width": 640,
+    "scrubber_media_url": "https://v.redd.it/97eh3gxjotm01/DASH_600_K",
+    "dash_url": "https://v.redd.it/97eh3gxjotm01/DASHPlaylist.mpd",
+    "duration": 11,
+    "hls_url": "https://v.redd.it/97eh3gxjotm01/HLSPlaylist.m3u8",
+    "is_gif": true,
+    "transcoding_status": "completed"
+  }
 
 const border = {
     border: 'solid',

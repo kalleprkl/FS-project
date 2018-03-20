@@ -1,10 +1,16 @@
 import React from 'react'
 
 const Reddit = ({ item }) => {
-    const post = item.object.data
+    const thing = item.object
+
+    /*if (thing.data.secure_media_embed.content) {
+        console.log('HEP!')
+        return thing.data.secure_media_embed.content
+    }*/
+    
     return (
         <div style={border} >
-            <p>{post.title}</p>
+            <p>{thing.data.title}</p>
         </div>
     )
 }
