@@ -1,5 +1,10 @@
 import apiService from '../services/apis'
 
+const endpoints = {
+    youtube: 'http://localhost:5000/yt/data',
+    reddit: 'http://localhost:5000/r/data'
+}
+
 const toInit = [
     {
         source: 'youtube',
@@ -11,9 +16,40 @@ const toInit = [
     }
 ]
 
-//const kakka = { user: window.localStorage.getItem(`rf-${source}`) }
+export const initApis = (sessions) => {
+    return (dispatch) => {
+        sessions.map(async ({ source, session, url }) => {
+            if (!url) {
+                try {
+                    const content = await apiService.get(endpoints[source], session)
+                    const items = content.map(object => {
+                        return {
+                            id: getId(),
+                            source,
+                            object
+                        }
+                    })
+                    dispatch({
+                        type: 'API_INIT',
+                        payload: {
+                            id: getId(),
+                            source,
+                            items
+                        }
+                    })
+                    dispatch({
+                        type: 'ADD_BUNCH',
+                        payload: items
+                    })
+                } catch (error) {
+                    console.log('api init failed')
+                }
+            }
+        })
+    }
+}
 
-export const initApis = () => {
+export const initApis2 = () => {
     return (dispatch) => {
         toInit.map(async ({ source, url }) => {
             try {

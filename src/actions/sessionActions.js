@@ -12,12 +12,14 @@ const toInit = [
 ]
 
 export const initSession = () => {
-    return (dispatch) => {
-        toInit.map(async ({ source, url }) => {
+    return async (dispatch) => {
+        await Promise.all(toInit.map(async ({ source, url }) => {
             const session = window.localStorage.getItem(`rf-${source}`)
+            console.log(session)
             try {
                 const response = await sessionService.get(url, session)
                 if (response.session) {
+                    console.log('AAAA')
                     dispatch({
                         type: 'ADD_SESSION',
                         payload: {
@@ -26,6 +28,8 @@ export const initSession = () => {
                         }
                     })
                 } else {
+                    console.log('HOP')
+                    window.localStorage.removeItem(`rf-${source}}`)
                     window.localStorage.setItem(`rf-${source}`, response.state)
                     dispatch({
                         type: 'ADD_SESSION',
@@ -39,7 +43,15 @@ export const initSession = () => {
             } catch (error) {
                 console.log('session init error')
             }
-        })
+        }))
+    }
+}
+
+export const endSession = (source) => {
+    console.log('ACTION', source)
+    return (dispatch) => {
+        window.localStorage.removeItem(`rf-${source}}`)
+        console.log('DISPATCH', window.localStorage.getItem(`rf-${source}}`))
     }
 }
 

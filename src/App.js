@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 import { initApis } from './actions/apiActions'
 import { initAuthLinks } from './actions/authLinkActions'
-import { initSession } from './actions/sessionActions'
+import { initSession, endSession } from './actions/sessionActions'
 
 import { BrowserRouter as Router } from 'react-router-dom'
 import { Container, Grid, Rail, Segment } from 'semantic-ui-react'
@@ -13,10 +13,14 @@ import axios from 'axios'
 
 class App extends Component {
 
-  componentDidMount() {
-    //this.props.initAuthLinks()
-    this.props.initSession()
-    this.props.initApis()
+  async componentDidMount() {
+    await this.props.initSession()
+    this.props.initApis(this.props.sessions)
+  }
+
+  logout = (source) => () => {
+    //console.log('APP', source)
+    this.props.endSession(source)
   }
 
   render() {
@@ -37,7 +41,7 @@ class App extends Component {
             <Rail position='left'>
               <Segment>
                 {/*Object.keys(this.props.authLinks).map(source => <a href={this.props.authLinks[source]} >{source}</a>)*/}
-                {this.props.sessions.map(session => session.url ? <a href={session.url}>{session.source}</a> : <button>{`${session.source} logout`}</button>)}
+                {this.props.sessions.map(session => session.url ? <a href={session.url}>{session.source}<br /></a> : <button onClick={this.logout(session.source)}>{`${session.source} logout`}<br /></button>)}
               </Segment>
             </Rail>
             <Grid.Column width={7} >
@@ -64,7 +68,8 @@ const mapStateToProps = (state) => {
 const mapActionToProps = {
   initAuthLinks,
   initApis,
-  initSession
+  initSession,
+  endSession
 }
 
 export default connect(mapStateToProps, mapActionToProps)(App)

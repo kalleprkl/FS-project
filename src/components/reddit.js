@@ -22,7 +22,7 @@ const border = {
     textAlign: 'left',
     //fontSize: 'small',
     margin: 10,
-    padding: 5
+    padding: 5,
 }
 
 export default Reddit
