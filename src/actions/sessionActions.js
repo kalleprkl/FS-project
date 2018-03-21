@@ -1,4 +1,5 @@
 import sessionService from '../services/sessions'
+import axios from 'axios'
 
 const toInit = [
     {
@@ -15,11 +16,11 @@ export const initSession = () => {
     return async (dispatch) => {
         await Promise.all(toInit.map(async ({ source, url }) => {
             const session = window.localStorage.getItem(`rf-${source}`)
-            console.log(session)
+            //console.log(session)
             try {
                 const response = await sessionService.get(url, session)
                 if (response.session) {
-                    console.log('AAAA')
+                    //console.log('AAAA')
                     dispatch({
                         type: 'ADD_SESSION',
                         payload: {
@@ -28,7 +29,7 @@ export const initSession = () => {
                         }
                     })
                 } else {
-                    console.log('HOP')
+                    //console.log('HOP')
                     window.localStorage.removeItem(`rf-${source}}`)
                     window.localStorage.setItem(`rf-${source}`, response.state)
                     dispatch({
@@ -47,11 +48,24 @@ export const initSession = () => {
     }
 }
 
-export const endSession = (source) => {
-    console.log('ACTION', source)
-    return (dispatch) => {
+export const endSession = ({ source, session }) => {
+    //console.log('ACTION', source)
+    return async (dispatch) => {
+        try {
+            const response = await axios.get(`http://localhost:5000/r/logout`, { headers: { 'Authorization': session } })
+        } catch (error) {
+            console.log('SHIT')
+        }
         window.localStorage.removeItem(`rf-${source}}`)
-        console.log('DISPATCH', window.localStorage.getItem(`rf-${source}}`))
+        console.log('HEP')
+        dispatch({
+            type: 'REMOVE_SESSION',
+            payload: source
+        })
+        dispatch({
+            type: 'CONTAINER_DEL',
+            payload: source
+        })
     }
 }
 

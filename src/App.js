@@ -14,13 +14,15 @@ import axios from 'axios'
 class App extends Component {
 
   async componentDidMount() {
+    //console.log('APPdidmount', window.localStorage.getItem(`rf-reddit`))
     await this.props.initSession()
     this.props.initApis(this.props.sessions)
   }
 
-  logout = (source) => () => {
+  logout = (session) => () => {
     //console.log('APP', source)
-    this.props.endSession(source)
+    this.props.endSession(session)
+    //console.log('APPlogout', window.localStorage.getItem(`rf-${session.source}}`))
   }
 
   render() {
@@ -41,7 +43,7 @@ class App extends Component {
             <Rail position='left'>
               <Segment>
                 {/*Object.keys(this.props.authLinks).map(source => <a href={this.props.authLinks[source]} >{source}</a>)*/}
-                {this.props.sessions.map(session => session.url ? <a href={session.url}>{session.source}<br /></a> : <button onClick={this.logout(session.source)}>{`${session.source} logout`}<br /></button>)}
+                {this.props.sessions.map(session => session.url ? <a href={session.url}>{session.source}<br /></a> : <button onClick={this.logout(session)}>{`${session.source} logout`}<br /></button>)}
               </Segment>
             </Rail>
             <Grid.Column width={7} >

@@ -3,7 +3,7 @@ const itemContainerReducer = (state = [], { type, payload }) => {
         case 'CONTAINER_ADD':
             return [...state, payload]
         case 'CONTAINER_DEL':
-            return state.filter(item => item.id !== payload.id)
+            return state.filter(item => item.source !== payload)
         case 'ADD_BUNCH':
             return [...state, ...payload]
         default:
