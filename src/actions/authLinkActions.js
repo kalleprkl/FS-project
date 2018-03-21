@@ -20,14 +20,14 @@ export const initAuthLinks = () => {
                 const response = await authLinkService.get(url, session)
                 if (!response.session) {
                     window.localStorage.setItem(`rf-${source}`, response.state)
-                }
-                dispatch({
-                    type: 'ADD_AUTH_LINK',
-                    payload: {
-                        source,
-                        url: response.authUrl
-                    }
-                })
+                    dispatch({
+                        type: 'ADD_AUTH_LINK',
+                        payload: {
+                            source,
+                            url: response.authUrl
+                        }
+                    })
+                } 
             } catch (exception) {
                 console.log('error while initializing links')
                 console.log(exception)

@@ -36,9 +36,8 @@ class App extends Component {
           <Segment>
             <Rail position='left'>
               <Segment>
-                <a href={this.props.authLinks.youtube || ''} >youtube</a>
-                <br />
-                <a href={this.props.authLinks.reddit} >reddit</a>
+                {Object.keys(this.props.authLinks).map(source => <a href={this.props.authLinks[source]} >{source}</a> 
+                )}
               </Segment>
             </Rail>
             <Grid.Column width={7} >
