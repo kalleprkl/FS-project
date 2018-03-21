@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
 import { initApis } from './actions/apiActions'
-import { initAuthLinks } from './actions/authLinkActions'
 import { initSession, endSession } from './actions/sessionActions'
 
 import { BrowserRouter as Router } from 'react-router-dom'
@@ -20,7 +19,7 @@ class App extends Component {
   }
 
   logout = (session) => () => {
-    //console.log('APP', source)
+    console.log('APP', session)
     this.props.endSession(session)
     //console.log('APPlogout', window.localStorage.getItem(`rf-${session.source}}`))
   }
@@ -62,13 +61,11 @@ class App extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    authLinks: state.authLinks,
     sessions: state.sessions
   }
 }
 
 const mapActionToProps = {
-  initAuthLinks,
   initApis,
   initSession,
   endSession

@@ -15,7 +15,7 @@ const toInit = [
 export const initSession = () => {
     return async (dispatch) => {
         await Promise.all(toInit.map(async ({ source, url }) => {
-            const session = window.localStorage.getItem(`rf-${source}`)
+            const session = window.sessionStorage.getItem(`rf-${source}`)
             //console.log(session)
             try {
                 const response = await sessionService.get(url, session)
@@ -30,8 +30,8 @@ export const initSession = () => {
                     })
                 } else {
                     //console.log('HOP')
-                    window.localStorage.removeItem(`rf-${source}}`)
-                    window.localStorage.setItem(`rf-${source}`, response.state)
+                    window.sessionStorage.removeItem(`rf-${source}}`)
+                    window.sessionStorage.setItem(`rf-${source}`, response.state)
                     dispatch({
                         type: 'ADD_SESSION',
                         payload: {
@@ -49,14 +49,8 @@ export const initSession = () => {
 }
 
 export const endSession = ({ source, session }) => {
-    //console.log('ACTION', source)
     return async (dispatch) => {
-        try {
-            const response = await axios.get(`http://localhost:5000/r/logout`, { headers: { 'Authorization': session } })
-        } catch (error) {
-            console.log('SHIT')
-        }
-        window.localStorage.removeItem(`rf-${source}}`)
+        window.sessionStorage.removeItem(`rf-${source}}`)
         console.log('HEP')
         dispatch({
             type: 'REMOVE_SESSION',
@@ -66,6 +60,20 @@ export const endSession = ({ source, session }) => {
             type: 'CONTAINER_DEL',
             payload: source
         })
+        let path 
+        if (source === 'reddit') {
+            path = 'r'
+        }
+        if (source === 'youtube') {
+            path = 'yt'
+        }
+        try {
+            await sessionService.get(`http://localhost:5000/${path}/logout`, session)
+            console.log('meni')
+        } catch (error) {
+            console.log('SHIT')
+        }
+
     }
 }
 
