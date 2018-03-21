@@ -14,8 +14,8 @@ import axios from 'axios'
 class App extends Component {
 
   componentDidMount() {
-    this.props.initAuthLinks()
-    //this.props.initSession()
+    //this.props.initAuthLinks()
+    this.props.initSession()
     this.props.initApis()
   }
 
@@ -36,8 +36,8 @@ class App extends Component {
           <Segment>
             <Rail position='left'>
               <Segment>
-                {Object.keys(this.props.authLinks).map(source => <a href={this.props.authLinks[source]} >{source}</a> 
-                )}
+                {/*Object.keys(this.props.authLinks).map(source => <a href={this.props.authLinks[source]} >{source}</a>)*/}
+                {this.props.sessions.map(session => session.url ? <a href={session.url}>{session.source}</a> : <button>{`${session.source} logout`}</button>)}
               </Segment>
             </Rail>
             <Grid.Column width={7} >
@@ -57,7 +57,7 @@ class App extends Component {
 const mapStateToProps = (state) => {
   return {
     authLinks: state.authLinks,
-    session: state.session
+    sessions: state.sessions
   }
 }
 

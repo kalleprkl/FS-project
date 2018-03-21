@@ -10,7 +10,7 @@ const reducer = (combineReducers({
     itemContainer: itemContainerReducer,
     apis: apiReducer,
     authLinks: authLinkReducer,
-    session: sessionReducer
+    sessions: sessionReducer
 }))
 
 const store = createStore(

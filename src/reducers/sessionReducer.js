@@ -1,8 +1,8 @@
-const sessionReducer = (state = {}, { type, payload }) => {
+const sessionReducer = (state = [], { type, payload }) => {
     switch (type) {
-        case 'ADD':
-            return Object.assign({}, state, payload)
-        case 'REMOVE':
+        case 'ADD_SESSION':
+            return [...state, payload]
+        case 'REMOVE_SESSION':
         default:
             return state
     }
