@@ -6,52 +6,50 @@ const toInit = [
         source: 'youtube',
         url: 'http://localhost:5000/yt'
     },
-    {
+    /*{
         source: 'reddit',
         url: 'http://localhost:5000/r'
-    }
+    }*/
 ]
 
 export const initSession = () => {
     return async (dispatch) => {
         await Promise.all(toInit.map(async ({ source, url }) => {
-            const session = window.sessionStorage.getItem(`rf-${source}`)
-            //console.log(session)
-            try {
-                const response = await sessionService.get(url, session)
-                if (response.session) {
-                    //console.log('AAAA')
-                    dispatch({
-                        type: 'ADD_SESSION',
-                        payload: {
-                            source,
-                            session
-                        }
-                    })
-                } else {
-                    //console.log('HOP')
-                    window.sessionStorage.removeItem(`rf-${source}}`)
-                    window.sessionStorage.setItem(`rf-${source}`, response.state)
-                    dispatch({
-                        type: 'ADD_SESSION',
-                        payload: {
-                            source,
-                            session: response.state,
-                            url: response.authUrl
-                        }
-                    })
-                }
-            } catch (error) {
-                console.log('session init error')
-            }
+            const session = await init(source, url)
+            dispatch({
+                type: 'ADD_SESSION',
+                payload: session
+            })
         }))
     }
 }
 
-export const endSession = ({ source, session }) => {
+const init = async (source, url) => {
+    const foundToken = window.sessionStorage.getItem(`rf-${source}`)
+    try {
+        const response = await sessionService.get(url, foundToken)
+        if (response.isActive) {
+            return {
+                source,
+                token: foundToken
+            }
+        } else {
+            const newToken = response.token
+            window.sessionStorage.setItem(`rf-${source}`, newToken)
+            return {
+                source,
+                token: newToken,
+                authUrl: response.authUrl
+            }
+        }
+    } catch (error) {
+        console.log('session init failure')
+    }
+}
+
+export const endSession = ({ source, token }) => {
     return async (dispatch) => {
         window.sessionStorage.removeItem(`rf-${source}}`)
-        console.log('HEP')
         dispatch({
             type: 'REMOVE_SESSION',
             payload: source
@@ -60,18 +58,20 @@ export const endSession = ({ source, session }) => {
             type: 'CONTAINER_DEL',
             payload: source
         })
-        let path 
-        if (source === 'reddit') {
-            path = 'r'
-        }
-        if (source === 'youtube') {
-            path = 'yt'
-        }
         try {
-            await sessionService.get(`http://localhost:5000/${path}/logout`, session)
-            console.log('meni')
+            const response = await sessionService.logout(source, token)
+            const newToken = response.token
+            window.sessionStorage.setItem(`rf-${source}`, newToken)
+            dispatch({
+                type: 'ADD_SESSION',
+                payload: {
+                    source,
+                    token: newToken,
+                    authUrl: response.authUrl
+                }
+            })
         } catch (error) {
-            console.log('SHIT')
+            console.log('logout error')
         }
 
     }

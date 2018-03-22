@@ -15,7 +15,7 @@ class App extends Component {
   async componentDidMount() {
     //console.log('APPdidmount', window.localStorage.getItem(`rf-reddit`))
     await this.props.initSession()
-    this.props.initApis(this.props.sessions)
+    //this.props.initApis(this.props.sessions)
   }
 
   logout = (session) => () => {
@@ -25,7 +25,7 @@ class App extends Component {
   }
 
   render() {
-
+    
     const fixed = {
       minWidth: 300,
       minHeight: 100,
@@ -41,8 +41,7 @@ class App extends Component {
           <Segment>
             <Rail position='left'>
               <Segment>
-                {/*Object.keys(this.props.authLinks).map(source => <a href={this.props.authLinks[source]} >{source}</a>)*/}
-                {this.props.sessions.map(session => session.url ? <a href={session.url}>{session.source}<br /></a> : <button onClick={this.logout(session)}>{`${session.source} logout`}<br /></button>)}
+                {this.props.sessions.map(session => session.authUrl ? <a href={session.authUrl}>{session.source}<br /></a> : <button onClick={this.logout(session)}>{`${session.source} logout`}<br /></button>)}
               </Segment>
             </Rail>
             <Grid.Column width={7} >
