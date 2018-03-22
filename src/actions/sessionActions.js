@@ -3,18 +3,20 @@ import sessionService from '../services/sessions'
 const toInit = [
     {
         source: 'youtube',
-        url: 'http://localhost:5000/yt'
+        url: 'http://localhost:5000/yt',
+        dataUrl: 'http://localhost:5000/yt/data'
     },
     {
         source: 'reddit',
-        url: 'http://localhost:5000/r'
+        url: 'http://localhost:5000/r',
+        dataUrl: 'http://localhost:5000/r/data'
     }
 ]
 
 export const initSession = () => {
     return async (dispatch) => {
-        await Promise.all(toInit.map(async ({ source, url }) => {
-            const session = await init(source, url)
+        await Promise.all(toInit.map(async api => {
+            const session = await initOne(api)
             dispatch({
                 type: 'ADD_SESSION',
                 payload: session
@@ -23,13 +25,15 @@ export const initSession = () => {
     }
 }
 
-const init = async (source, url) => {
+
+const initOne = async ({ source, url, dataUrl }) => {
     const foundToken = window.sessionStorage.getItem(`rf-${source}`)
     try {
         const response = await sessionService.get(url, foundToken)
         if (response.isActive) {
             return {
                 source,
+                dataUrl,
                 token: foundToken
             }
         } else {
@@ -37,6 +41,7 @@ const init = async (source, url) => {
             window.sessionStorage.setItem(`rf-${source}`, newToken)
             return {
                 source,
+                dataUrl,
                 token: newToken,
                 authUrl: response.authUrl
             }

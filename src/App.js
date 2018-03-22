@@ -23,14 +23,11 @@ class App extends Component {
     const fixed = {
       minWidth: 300,
       minHeight: 100,
-      //border: 'solid',
-      //margin: 50
     }
 
     return (
       <Container>
         <div style={fixed}></div>
-        <Grid></Grid>
         <Grid centered>
           <Segment>
             <Rail position='left'>
