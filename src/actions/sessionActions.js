@@ -1,15 +1,14 @@
 import sessionService from '../services/sessions'
-import axios from 'axios'
 
 const toInit = [
     {
         source: 'youtube',
         url: 'http://localhost:5000/yt'
     },
-    /*{
+    {
         source: 'reddit',
         url: 'http://localhost:5000/r'
-    }*/
+    }
 ]
 
 export const initSession = () => {

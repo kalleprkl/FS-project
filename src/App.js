@@ -4,24 +4,18 @@ import { connect } from 'react-redux'
 import { initApis } from './actions/apiActions'
 import { initSession, endSession } from './actions/sessionActions'
 
-import { BrowserRouter as Router } from 'react-router-dom'
 import { Container, Grid, Rail, Segment } from 'semantic-ui-react'
 import ItemContainer from './components/itemContainer'
-
-import axios from 'axios'
 
 class App extends Component {
 
   async componentDidMount() {
-    //console.log('APPdidmount', window.localStorage.getItem(`rf-reddit`))
     await this.props.initSession()
     this.props.initApis(this.props.sessions)
   }
 
   logout = (session) => () => {
-    console.log('APP', session)
     this.props.endSession(session)
-    //console.log('APPlogout', window.localStorage.getItem(`rf-${session.source}}`))
   }
 
   render() {

@@ -22,7 +22,6 @@ export const initApis = (sessions) => {
             if (!authUrl) {
                 try {
                     const content = await apiService.get(endpoints[source], token)
-                    console.log(content)
                     const items = content.map(object => {
                         return {
                             id: getId(),
