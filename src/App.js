@@ -15,7 +15,7 @@ class App extends Component {
   async componentDidMount() {
     //console.log('APPdidmount', window.localStorage.getItem(`rf-reddit`))
     await this.props.initSession()
-    //this.props.initApis(this.props.sessions)
+    this.props.initApis(this.props.sessions)
   }
 
   logout = (session) => () => {

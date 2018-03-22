@@ -14,7 +14,6 @@ const logout = async (source, token) => {
         path = 'yt'
     }
     const response = await axios.get(`http://localhost:5000/${path}/logout`, { headers: { 'Authorization': token } })
-    console.log(response)
     return response.data
 }
 

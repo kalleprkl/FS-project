@@ -37,7 +37,8 @@ const border2 = {
 const createItem = (item) => {
     switch (item.source) {
         case 'youtube':
-            return <Youtube key={item.id} item={item} />
+            //return <Youtube key={item.id} item={item} />
+            return <p style={border}>{item.object}</p>
         case 'reddit':
             return <Reddit key={item.id} item={item} />
         case 'facebook':

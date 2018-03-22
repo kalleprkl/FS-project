@@ -18,10 +18,11 @@ const toInit = [
 
 export const initApis = (sessions) => {
     return (dispatch) => {
-        sessions.map(async ({ source, session, url }) => {
-            if (!url) {
+        sessions.map(async ({ source, token, authUrl }) => {
+            if (!authUrl) {
                 try {
-                    const content = await apiService.get(endpoints[source], session)
+                    const content = await apiService.get(endpoints[source], token)
+                    console.log(content)
                     const items = content.map(object => {
                         return {
                             id: getId(),
