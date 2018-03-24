@@ -5,15 +5,8 @@ const get = async (url, token) => {
     return response.data
 }
 
-const logout = async (source, token) => {
-    let path
-    if (source === 'reddit') {
-        path = 'r'
-    }
-    if (source === 'youtube') {
-        path = 'yt'
-    }
-    const response = await axios.get(`http://localhost:5000/${path}/logout`, { headers: { 'Authorization': token } })
+const logout = async (api, token) => {
+    const response = await axios.get(`http://localhost:5000/auth/logout/${api}`, { headers: { 'Authorization': token } })
     return response.data
 }
 

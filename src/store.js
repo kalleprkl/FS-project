@@ -8,7 +8,7 @@ import sessionReducer from './reducers/sessionReducer'
 const reducer = (combineReducers({
     itemContainer: itemContainerReducer,
     apis: apiReducer,
-    sessions: sessionReducer
+    session: sessionReducer
 }))
 
 const store = createStore(

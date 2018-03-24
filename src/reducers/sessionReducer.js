@@ -1,9 +1,9 @@
-const sessionReducer = (state = [], { type, payload }) => {
+const sessionReducer = (state = '', { type, payload }) => {
     switch (type) {
         case 'ADD_SESSION':
-            return [...state, payload]
+            return payload
         case 'REMOVE_SESSION':
-            return state.filter(session => session.source !== payload)
+            //return state.filter(session => session.source !== payload)
         default:
             return state
     }

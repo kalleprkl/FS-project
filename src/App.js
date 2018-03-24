@@ -11,18 +11,31 @@ class App extends Component {
 
   async componentDidMount() {
     await this.props.initSession()
-    this.props.initApis(this.props.sessions)
+    this.props.initApis(this.props.session)
   }
 
-  logout = (session) => () => {
-    this.props.endSession(session)
+  logout = (api) => () => {
+    this.props.endSession(api)
   }
 
   render() {
-    
+
     const fixed = {
       minWidth: 300,
       minHeight: 100,
+    }
+
+    const links = () => {
+      if (this.props.session) {
+        const component = this.props.session.apis.map(api => {
+          if (api.authUrl) {
+            return <a href={api.authUrl}>{api.api}<br /></a>
+          } else {
+            return <button onClick={this.logout(api.api)}>{`${api.api} logout`}<br /></button>
+          }
+        })
+        return component
+      }
     }
 
     return (
@@ -32,7 +45,7 @@ class App extends Component {
           <Segment>
             <Rail position='left'>
               <Segment>
-                {this.props.sessions.map(session => session.authUrl ? <a href={session.authUrl}>{session.source}<br /></a> : <button onClick={this.logout(session)}>{`${session.source} logout`}<br /></button>)}
+                {links()}
               </Segment>
             </Rail>
             <Grid.Column width={7} >
@@ -51,7 +64,7 @@ class App extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    sessions: state.sessions
+    session: state.session
   }
 }
 
