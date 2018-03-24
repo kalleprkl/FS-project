@@ -28,6 +28,7 @@ export const initSession = () => {
 
 const initOne = async ({ source, url, dataUrl }) => {
     const foundToken = window.sessionStorage.getItem(`rf-${source}`)
+    await sessionService.get('http://localhost:5000/auth', foundToken)
     try {
         const response = await sessionService.get(url, foundToken)
         if (response.isActive) {
