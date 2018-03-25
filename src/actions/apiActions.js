@@ -26,34 +26,6 @@ export const initApis = (session) => {
     }
 }
 
-export const initApis2 = (sessions) => {
-    return (dispatch) => {
-        sessions.map(async ({ source, token, dataUrl, authUrl }) => {
-            if (!authUrl) {
-                try {
-                    const content = await apiService.get(dataUrl, token)
-                    const items = content.map(object => {
-                        return {
-                            id: getId(),
-                            source,
-                            object
-                        }
-                    })
-                    dispatch({
-                        type: 'API_INIT',
-                        payload: {
-                            source,
-                            items
-                        }
-                    })
-                } catch (error) {
-                    console.log('api init failed')
-                }
-            }
-        })
-    }
-}
-
 const ids = []
 
 const getId = () => {
