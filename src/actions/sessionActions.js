@@ -17,8 +17,8 @@ export const initSession = () => {
 }
 
 export const endSession = (api, token) => {
+    console.log('end', token)
     return async (dispatch) => {
-        window.sessionStorage.removeItem(`rf-session`)
         dispatch({
             type: 'REMOVE_SESSION',
             payload: api
@@ -29,7 +29,8 @@ export const endSession = (api, token) => {
         })
         try {
             const response = await sessionService.logout(api, token)
-            addSession(dispatch, response.apis, response.token)
+            addSession(dispatch, response.apis, token)
+            //console.log(window.sessionStorage.getItem(`rf-session`))
         } catch (error) {
             console.log('logout error')
         }
@@ -38,6 +39,7 @@ export const endSession = (api, token) => {
 }
 
 const addSession = (dispatch, apis, token) => {
+    console.log('add', token)
     const session = {
         token,
         apis
