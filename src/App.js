@@ -15,7 +15,7 @@ class App extends Component {
   }
 
   logout = (api) => () => {
-    this.props.endSession(api)
+    this.props.endSession(api, this.props.session.token)
   }
 
   render() {
@@ -27,14 +27,14 @@ class App extends Component {
 
     const links = () => {
       if (this.props.session) {
-        const component = this.props.session.apis.map(api => {
+        const sideItem = this.props.session.apis.map(api => {
           if (api.authUrl) {
             return <a href={api.authUrl}>{api.api}<br /></a>
           } else {
             return <button onClick={this.logout(api.api)}>{`${api.api} logout`}<br /></button>
           }
         })
-        return component
+        return sideItem
       }
     }
 

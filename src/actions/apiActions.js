@@ -19,10 +19,6 @@ export const initApis = (session) => {
                         items
                     }
                 })
-                dispatch({
-                    type: 'ADD_BUNCH',
-                    payload: items
-                })
             } catch (error) {
                 console.log('api init failed')
             }
@@ -49,10 +45,6 @@ export const initApis2 = (sessions) => {
                             source,
                             items
                         }
-                    })
-                    dispatch({
-                        type: 'ADD_BUNCH',
-                        payload: items
                     })
                 } catch (error) {
                     console.log('api init failed')

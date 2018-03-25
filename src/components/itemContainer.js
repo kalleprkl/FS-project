@@ -1,14 +1,17 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { removeFromContainer } from '../actions/containerActions'
 import Youtube from './youtube'
 import Reddit from './reddit'
 
-const ItemContainer = ({ itemContainer, removeFromContainer }) => {
+const ItemContainer = ({ apis }) => {
+
+    let container = []
+    apis.map(api => container = [...container, ...api.items])
+    
     return (
         <div style={{ minHeight: 500, minWidth: 500 }}>
-            {itemContainer.length > 0 ?
-                itemContainer.map(item => {
+            {container.length > 0 ?
+                container.map(item => {
                     return createItem(item)}) 
                 : 
                 <div>give permits to fill feed</div>
@@ -50,12 +53,10 @@ const createItem = (item) => {
 
 const mapStateToProps = (state) => {
     return {
-        itemContainer: state.itemContainer
+        apis: state.apis
     }
 }
 
-const mapActionToProps = {
-    removeFromContainer
-}
+const mapActionToProps = {}
 
 export default connect(mapStateToProps, mapActionToProps)(ItemContainer)

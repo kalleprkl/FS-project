@@ -3,7 +3,7 @@ const sessionReducer = (state = '', { type, payload }) => {
         case 'ADD_SESSION':
             return payload
         case 'REMOVE_SESSION':
-            //return state.filter(session => session.source !== payload)
+            return ''
         default:
             return state
     }
