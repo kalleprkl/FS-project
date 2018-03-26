@@ -8,7 +8,7 @@ export const initSession = () => {
             foundToken = foundSession.token
         }
         try {
-            const response = await sessionService.get('http://localhost:5000/auth', foundToken)
+            const response = await sessionService.get(foundToken)
             addSession(dispatch, response.apis, response.token || foundToken)
         } catch (error) {
             console.log('session init failure')
@@ -17,7 +17,6 @@ export const initSession = () => {
 }
 
 export const endSession = (api, token) => {
-    console.log('end', token)
     return async (dispatch) => {
         dispatch({
             type: 'REMOVE_SESSION',
@@ -29,8 +28,7 @@ export const endSession = (api, token) => {
         })
         try {
             const response = await sessionService.logout(api, token)
-            addSession(dispatch, response.apis, token)
-            //console.log(window.sessionStorage.getItem(`rf-session`))
+            addSession(dispatch, response.apis, response.token || token)
         } catch (error) {
             console.log('logout error')
         }
@@ -39,7 +37,6 @@ export const endSession = (api, token) => {
 }
 
 const addSession = (dispatch, apis, token) => {
-    console.log('add', token)
     const session = {
         token,
         apis

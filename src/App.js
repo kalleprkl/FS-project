@@ -4,18 +4,15 @@ import { connect } from 'react-redux'
 import { initApis } from './actions/apiActions'
 import { initSession, endSession } from './actions/sessionActions'
 
-import { Container, Grid, Rail, Segment } from 'semantic-ui-react'
+import { Container, Grid, Rail, Segment, Menu } from 'semantic-ui-react'
 import ItemContainer from './components/itemContainer'
+import LeftMenu from './components/leftMenu'
 
 class App extends Component {
 
   async componentDidMount() {
     await this.props.initSession()
     this.props.initApis(this.props.session)
-  }
-
-  logout = (api) => () => {
-    this.props.endSession(api, this.props.session.token)
   }
 
   render() {
@@ -25,19 +22,6 @@ class App extends Component {
       minHeight: 100,
     }
 
-    const links = () => {
-      if (this.props.session) {
-        const sideItem = this.props.session.apis.map(api => {
-          if (api.authUrl) {
-            return <a href={api.authUrl}>{api.api}<br /></a>
-          } else {
-            return <button onClick={this.logout(api.api)}>{`${api.api} logout`}<br /></button>
-          }
-        })
-        return sideItem
-      }
-    }
-
     return (
       <Container>
         <div style={fixed}></div>
@@ -45,7 +29,7 @@ class App extends Component {
           <Segment>
             <Rail position='left'>
               <Segment>
-                {links()}
+                <LeftMenu/>
               </Segment>
             </Rail>
             <Grid.Column width={7} >
@@ -71,7 +55,6 @@ const mapStateToProps = (state) => {
 const mapActionToProps = {
   initApis,
   initSession,
-  endSession
 }
 
 export default connect(mapStateToProps, mapActionToProps)(App)

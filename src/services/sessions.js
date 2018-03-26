@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-const get = async (url, token) => {
-    const response = await axios.get(url, { headers: { 'Authorization': token } })
+const get = async (token) => {
+    const response = await axios.get('http://localhost:5000/auth', { headers: { 'Authorization': token } })
     return response.data
 }
 
