@@ -9,6 +9,7 @@ import LeftMenu from './components/leftMenu'
 class App extends Component {
 
   async componentDidMount() {
+    console.log('did mount')
     await this.props.initSession()
     this.props.initApis()
   }
