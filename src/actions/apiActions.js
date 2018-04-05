@@ -15,10 +15,10 @@ export const removeApiAction = (api) => {
 }
 
 export const initApis = () => {
-    return (dispatch, getState) => {  
-        const { session } = getState()                                     
+    return async (dispatch, getState) => {
+        const { session } = getState()
         if (session) {
-            session.apis.map(async ({ api }) => {
+            const promises = session.apis.map(async ({ api }) => {
                 try {
                     const data = await apiService.get(api, session.token)
                     const items = data.map(object => {
@@ -36,6 +36,7 @@ export const initApis = () => {
                     console.log('api init failed')
                 }
             })
+            await Promise.all(promises)
         } else {
             console.log('server unavailable')
         }
