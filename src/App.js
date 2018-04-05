@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-
+import { initSession } from './actions/sessionActions'
 import { initApis } from './actions/apiActions'
-import { initSession, endSession } from './actions/sessionActions'
-
-import { Container, Grid, Rail, Segment, Menu } from 'semantic-ui-react'
+import { Container, Grid, Rail, Segment } from 'semantic-ui-react'
 import ItemContainer from './components/itemContainer'
 import LeftMenu from './components/leftMenu'
 
@@ -12,14 +10,14 @@ class App extends Component {
 
   async componentDidMount() {
     await this.props.initSession()
-    this.props.initApis(this.props.session)
+    this.props.initApis()
   }
 
   render() {
 
     const fixed = {
       minWidth: 300,
-      minHeight: 100,
+      minHeight: 100
     }
 
     return (
@@ -46,15 +44,9 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    session: state.session
-  }
-}
-
 const mapActionToProps = {
   initApis,
-  initSession,
+  initSession
 }
 
-export default connect(mapStateToProps, mapActionToProps)(App)
+export default connect(null, mapActionToProps)(App)

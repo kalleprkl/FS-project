@@ -1,28 +1,44 @@
 import apiService from '../services/apis'
 
-export const initApis = (session) => {
-    return (dispatch) => {
-        session.apis.map(async ({ api }) => {
-            try {
-                const data = await apiService.get(`http://localhost:5000/data/${api}`, session.token)
-                const items = data.map(object => {
-                    return {
-                        id: getId(),
-                        api,
-                        object
-                    }
-                })
-                dispatch({
-                    type: 'API_INIT',
-                    payload: {
+const addApiAction = (api) => {
+    return {
+        type: 'ADD_API',
+        payload: api
+    }
+}
+
+export const removeApiAction = (api) => {
+    return {
+        type: 'REMOVE_API',
+        payload: api
+    }
+}
+
+export const initApis = () => {
+    return (dispatch, getState) => {  
+        const { session } = getState()                                     
+        if (session) {
+            session.apis.map(async ({ api }) => {
+                try {
+                    const data = await apiService.get(api, session.token)
+                    const items = data.map(object => {
+                        return {
+                            id: getId(),
+                            api,
+                            object
+                        }
+                    })
+                    dispatch(addApiAction({
                         api,
                         items
-                    }
-                })
-            } catch (error) {
-                console.log('api init failed')
-            }
-        })
+                    }))
+                } catch (error) {
+                    console.log('api init failed')
+                }
+            })
+        } else {
+            console.log('server unavailable')
+        }
     }
 }
 

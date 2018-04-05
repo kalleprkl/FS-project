@@ -15,7 +15,6 @@ const border = {
     borderWidth: '1px',
     maxWidth: 500,
     textAlign: 'left',
-    //fontSize: 'small',
     margin: 10,
     padding: 5,
 }

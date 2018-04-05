@@ -10,7 +10,7 @@ const LeftMenu = ({ session, endSession }) => {
                 {session.apis.map(api => {
                     if (api.authUrl) {
                         return (
-                            <Menu.Item>
+                            <Menu.Item key={api.api}>
                                 <a href={api.authUrl}>
                                     <div>
                                         {api.api}
@@ -20,7 +20,7 @@ const LeftMenu = ({ session, endSession }) => {
                         )
                     } else {
                         return (
-                            <Menu.Item onClick={() => {endSession(api.api, session.token)}}>{`${api.api} logout`}</Menu.Item>
+                            <Menu.Item key={api.api} onClick={() => {endSession(api.api)}}>{`${api.api} logout`}</Menu.Item>
                         )
                     }
                 })}

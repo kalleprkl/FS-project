@@ -20,6 +20,20 @@ const ItemContainer = ({ apis }) => {
     )
 }
 
+const createItem = (item) => {
+    switch (item.api) {
+        case 'youtube':
+            //return <Youtube key={item.id} item={item} />
+            return <p key={item.id} style={border}>{item.object}</p>
+        case 'reddit':
+            return <Reddit key={item.id} item={item} />
+        case 'facebook':
+            return <p style={border}>facebook</p>
+        default:
+            return <p style={border2}></p>
+    }
+}
+
 const border = {
     border: 'solid',
     borderWidth: '1px',
@@ -35,20 +49,6 @@ const border2 = {
     maxWidth: 700,
     textAlign: 'left',
     //margin: 20
-}
-
-const createItem = (item) => {
-    switch (item.api) {
-        case 'youtube':
-            //return <Youtube key={item.id} item={item} />
-            return <p key={item.id} style={border}>{item.object}</p>
-        case 'reddit':
-            return <Reddit key={item.id} item={item} />
-        case 'facebook':
-            return <p style={border}>facebook</p>
-        default:
-            return <p style={border2}></p>
-    }
 }
 
 const mapStateToProps = (state) => {

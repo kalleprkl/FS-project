@@ -1,4 +1,12 @@
 import sessionService from '../services/sessions'
+import { removeApiAction } from './apiActions'
+
+const addSessionAction = (session) => {
+    return {
+        type: 'ADD_SESSION',
+        payload: session
+    }
+}
 
 export const initSession = () => {
     return async (dispatch) => {
@@ -9,26 +17,30 @@ export const initSession = () => {
         }
         try {
             const response = await sessionService.get(foundToken)
-            addSession(dispatch, response.apis, response.token || foundToken)
+            const session = {
+                token: response.token || foundToken,
+                apis: response.apis
+            }
+            window.sessionStorage.setItem(`rf-session`, JSON.stringify(session))
+            dispatch(addSessionAction(session))
         } catch (error) {
             console.log('session init failure')
         }
     }
 }
 
-export const endSession = (api, token) => {
-    return async (dispatch) => {
-        dispatch({
-            type: 'REMOVE_SESSION',
-            payload: api
-        })
-        dispatch({
-            type: 'API_REMOVE',
-            payload: api
-        })
+export const endSession = (api) => {
+    return async (dispatch, getState) => {
+        dispatch(removeApiAction(api))
         try {
+            const token = getState().session.token
             const response = await sessionService.logout(api, token)
-            addSession(dispatch, response.apis, response.token || token)
+            const session = {
+                token: response.token || token,
+                apis: response.apis
+            }
+            window.sessionStorage.setItem(`rf-session`, JSON.stringify(session))
+            dispatch(addSessionAction(session))
         } catch (error) {
             console.log('logout error')
         }
@@ -36,17 +48,6 @@ export const endSession = (api, token) => {
     }
 }
 
-const addSession = (dispatch, apis, token) => {
-    const session = {
-        token,
-        apis
-    }
-    window.sessionStorage.setItem(`rf-session`, JSON.stringify(session))
-    dispatch({
-        type: 'ADD_SESSION',
-        payload: session
-    })
-}
 
 
 

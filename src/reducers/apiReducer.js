@@ -1,9 +1,9 @@
 
 const apiReducer = (state = [], { type, payload }) => {
     switch (type) {
-        case 'API_INIT':
+        case 'ADD_API':
             return [...state, payload]
-        case 'API_REMOVE':
+        case 'REMOVE_API':
             return state.filter(api => api.api !== payload)
         default:
             return state
