@@ -1,4 +1,4 @@
-const sessionReducer = (state = {}, { type, payload }) => {
+const sessionReducer = (state = '', { type, payload }) => {
     switch (type) {
         case 'ADD_SESSION':
             return payload

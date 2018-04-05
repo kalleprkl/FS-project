@@ -15,7 +15,7 @@ class App extends Component {
   }
 
   render() {
-
+    console.log('render')
     const fixed = {
       minWidth: 300,
       minHeight: 100

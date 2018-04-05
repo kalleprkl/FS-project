@@ -4,6 +4,7 @@ import { endSession } from '../actions/sessionActions'
 import { Menu } from 'semantic-ui-react'
 
 const LeftMenu = ({ session, endSession }) => {
+    console.log(session)
     if (session) {
         return (
             <Menu vertical fluid >
