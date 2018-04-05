@@ -8,18 +8,18 @@ const mockStore = configureMockStore(middlewares)
 
 describe('initApis', () => {
 
-    /* beforeEach(() => {
+    beforeEach(() => {
         moxios.install()
     })
-    afteEach(() => {
+
+    afterEach(() => {
         moxios.uninstall()
-    }) */
+    }) 
 
     it('', async () => {
-        moxios.install()
         const store = mockStore({
             session: {
-                token: '<token000>',
+                token: '<token>',
                 apis: [
                     { api: 'youtube' },
                     { api: 'reddit' }
@@ -53,6 +53,5 @@ describe('initApis', () => {
         })
         await store.dispatch(initApis())
         expect(store.getActions()).toEqual(expected)
-        moxios.uninstall()
     })
 })

@@ -10,7 +10,7 @@ const addSessionAction = (session) => {
 
 export const initSession = () => {
     return async (dispatch) => {
-        const foundSession = JSON.parse(window.sessionStorage.getItem(`rf-session`))
+        const foundSession = JSON.parse(window.localStorage.getItem(`rf-session`))
         let foundToken = ''
         if (foundSession) {
             foundToken = foundSession.token
@@ -21,7 +21,7 @@ export const initSession = () => {
                 token: response.token || foundToken,
                 apis: response.apis
             }
-            window.sessionStorage.setItem(`rf-session`, JSON.stringify(session))
+            window.localStorage.setItem(`rf-session`, JSON.stringify(session))
             dispatch(addSessionAction(session))
         } catch (error) {
             console.log('session init failure')
@@ -39,7 +39,7 @@ export const endSession = (api) => {
                 token: response.token || token,
                 apis: response.apis
             }
-            window.sessionStorage.setItem(`rf-session`, JSON.stringify(session))
+            window.localStorage.setItem(`rf-session`, JSON.stringify(session))
             dispatch(addSessionAction(session))
         } catch (error) {
             console.log('logout error')
