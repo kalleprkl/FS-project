@@ -27,10 +27,8 @@ const createItem = (item) => {
             return <p key={item.id} style={border}>{item.object}</p>
         case 'reddit':
             return <Reddit key={item.id} item={item} />
-        case 'facebook':
-            return <p style={border}>facebook</p>
         default:
-            return <p style={border2}></p>
+            return <p key={Math.random()} style={border2}>unknown</p>
     }
 }
 
@@ -57,6 +55,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapActionToProps = {}
-
-export default connect(mapStateToProps, mapActionToProps)(ItemContainer)
+export default connect(mapStateToProps)(ItemContainer)

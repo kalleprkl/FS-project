@@ -43,11 +43,11 @@ describe('initApis', () => {
                 } 
             }
         ]
-        moxios.stubRequest('http://localhost:5000/data/youtube', {
+        moxios.stubRequest('/data/youtube', {
             status: 200,
             response: ['youtube']
         })
-        moxios.stubRequest('http://localhost:5000/data/reddit', {
+        moxios.stubRequest('/data/reddit', {
             status: 200,
             response: ['reddit']
         })

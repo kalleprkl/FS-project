@@ -33,7 +33,7 @@ describe('initSession', () => {
 
     it('uses token found in storage if such exists', async () => {
         localStorageMock.getItem.mockReturnValueOnce(JSON.stringify({ token: '<token>' }))
-        moxios.stubRequest('http://localhost:5000/auth', {
+        moxios.stubRequest('/auth', {
             status: 200,
             response: { apis: ['...apis'] }
         })
@@ -49,7 +49,7 @@ describe('initSession', () => {
 
     it('token received in response takes precedense over the one found in storage', async () => {
         localStorageMock.getItem.mockReturnValueOnce(JSON.stringify({ token: '<token>' }))
-        moxios.stubRequest('http://localhost:5000/auth', {
+        moxios.stubRequest('/auth', {
             status: 200,
             response: { token: '<newToken>', apis: ['...apis'] }
         })
@@ -65,7 +65,7 @@ describe('initSession', () => {
 
     it('if there is no token in storage, the one in response is used', async () => {
         localStorageMock.getItem.mockReturnValueOnce(JSON.stringify(''))
-        moxios.stubRequest('http://localhost:5000/auth', {
+        moxios.stubRequest('/auth', {
             status: 200,
             response: { token: '<newToken>', apis: ['...apis'] }
         })
@@ -86,7 +86,7 @@ describe('endSession', () => {
         const store = mockStore({
             session: { token : '<token>' }
         })
-        moxios.stubRequest('http://localhost:5000/auth/logout/reddit', {
+        moxios.stubRequest('/auth/logout/reddit', {
             status: 200,
             response: { apis: ['...apis'] }
         })
@@ -108,7 +108,7 @@ describe('endSession', () => {
         const store = mockStore({
             session: { token : '<token>' }
         })
-        moxios.stubRequest('http://localhost:5000/auth/logout/reddit', {
+        moxios.stubRequest('/auth/logout/reddit', {
             status: 200,
             response: { token: '<newToken>', apis: ['...apis'] }
         })

@@ -17,7 +17,6 @@ export const initSession = () => {
         }
         try {
             const response = await sessionService.get(foundToken)
-            console.log(response.status)
             const session = {
                 token: response.token || foundToken,
                 apis: response.apis
@@ -45,7 +44,6 @@ export const endSession = (api) => {
         } catch (error) {
             console.log('logout error')
         }
-
     }
 }
 

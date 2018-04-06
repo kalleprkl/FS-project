@@ -3,7 +3,7 @@ import reducer from './sessionReducer'
 describe('sessionReducer', () => {
     
     it('initial state', () => {
-        expect(reducer(undefined, {})).toEqual({})
+        expect(reducer(undefined, {})).toBeFalsy()
     })
 
     it('ADD_SESSION', () => {
