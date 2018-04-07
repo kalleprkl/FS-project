@@ -1,6 +1,6 @@
 const sessionReducer = (state = '', { type, payload }) => {
     switch (type) {
-        case 'ADD_SESSION':
+        case 'SET_SESSION':
             return payload
         default:
             return state

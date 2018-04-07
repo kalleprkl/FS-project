@@ -6,7 +6,7 @@ describe('sessionReducer', () => {
         expect(reducer(undefined, {})).toBeFalsy()
     })
 
-    it('ADD_SESSION', () => {
+    it('SET_SESSION', () => {
         const oldState = {
             token: '<token>',
             apis: ['...apis']
@@ -15,7 +15,7 @@ describe('sessionReducer', () => {
             token: '<newToken>',
             apis: ['...apis']
         }
-        const newState = reducer(oldState, { type: 'ADD_SESSION', payload: newSession })
+        const newState = reducer(oldState, { type: 'SET_SESSION', payload: newSession })
         expect(newState).toEqual(newSession)
     })
 })

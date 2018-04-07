@@ -17,29 +17,32 @@ export const removeApiAction = (api) => {
 export const initApis = () => {
     return async (dispatch, getState) => {
         const { session } = getState()
-        if (session) {
-            const promises = session.apis.map(async ({ api }) => {
-                try {
-                    const data = await apiService.get(api, session.token)
-                    const items = data.map(object => {
-                        return {
-                            id: getId(),
-                            api,
-                            object
-                        }
-                    })
-                    dispatch(addApiAction({
-                        api,
-                        items
-                    }))
-                } catch (error) {
-                    console.log('api init failed')
-                }
-            })
-            await Promise.all(promises)
-        } else {
-            console.log('server unavailable')
+        if (!session) {
+            return
         }
+        const promises = session.apis.map(async api => {
+            if (api.authUrl) {
+                return
+            }
+            try {
+                const data = await apiService.get(api.api, session.token)
+                const items = data.map(object => {
+                    return {
+                        id: getId(),
+                        api: api.api,
+                        object
+                    }
+                })
+                dispatch(addApiAction({
+                    api: api.api,
+                    items
+                }))
+            } catch (error) {
+                console.log('api init failed')
+            }
+
+        })
+        await Promise.all(promises)
     }
 }
 

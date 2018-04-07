@@ -21,8 +21,8 @@ describe('initApis', () => {
             session: {
                 token: '<token>',
                 apis: [
-                    { api: 'youtube' },
-                    { api: 'reddit' }
+                    { api: 'youtube', authUrl: '' },
+                    { api: 'reddit', authUrl: '' }
                 ]
             },
             apis: []

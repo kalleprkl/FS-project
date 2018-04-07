@@ -8,14 +8,12 @@ import LeftMenu from './components/leftMenu'
 
 class App extends Component {
 
-  async componentDidMount() {
-    console.log('did mount')
-    await this.props.initSession()
-    this.props.initApis()
+  componentDidMount() {
+    this.props.initSession()
   }
 
   render() {
-    console.log('render')
+    
     const fixed = {
       minWidth: 300,
       minHeight: 100

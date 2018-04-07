@@ -1,7 +1,7 @@
 import sessionService from '../services/sessions'
-import { removeApiAction } from './apiActions'
+import { initApis, removeApiAction } from './apiActions'
 
-const addSessionAction = (session) => {
+const setSessionAction = (session) => {
     return {
         type: 'SET_SESSION',
         payload: session
@@ -23,7 +23,8 @@ export const initSession = () => {
                 apis: response.apis
             }
             window.localStorage.setItem(`rf-session`, JSON.stringify(session))
-            dispatch(addSessionAction(session))
+            dispatch(setSessionAction(session))
+            dispatch(initApis())
         } catch (error) {
             console.log('session init failure')
         }
@@ -42,7 +43,7 @@ export const endSession = (api) => {
                 apis: response.apis
             }
             window.localStorage.setItem(`rf-session`, JSON.stringify(session))
-            dispatch(addSessionAction(session))
+            dispatch(setSessionAction(session))
         } catch (error) {
             console.log('logout error')
         }
