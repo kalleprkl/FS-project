@@ -3,16 +3,17 @@ import { removeApiAction } from './apiActions'
 
 const addSessionAction = (session) => {
     return {
-        type: 'ADD_SESSION',
+        type: 'SET_SESSION',
         payload: session
     }
 }
 
 export const initSession = () => {
     return async (dispatch) => {
-        const foundSession = JSON.parse(window.localStorage.getItem(`rf-session`))
+        const foundSessionJSON = window.localStorage.getItem(`rf-session`)
         let foundToken = ''
-        if (foundSession) {
+        if (foundSessionJSON) {
+            const foundSession = JSON.parse(foundSessionJSON)
             foundToken = foundSession.token
         }
         try {
@@ -26,6 +27,7 @@ export const initSession = () => {
         } catch (error) {
             console.log('session init failure')
         }
+
     }
 }
 

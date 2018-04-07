@@ -38,13 +38,13 @@ describe('initSession', () => {
             response: { apis: ['...apis'] }
         })
         await store.dispatch(initSession())
-        const expected = [
+        const expectedActions = [
             {
-                type: 'ADD_SESSION',
+                type: 'SET_SESSION',
                 payload: { token: '<token>', apis: ['...apis'] }
             }
         ]
-        expect(store.getActions()).toEqual(expected)
+        expect(store.getActions()).toEqual(expectedActions)
     })
 
     it('token received in response takes precedense over the one found in storage', async () => {
@@ -54,13 +54,13 @@ describe('initSession', () => {
             response: { token: '<newToken>', apis: ['...apis'] }
         })
         await store.dispatch(initSession())
-        const expected = [
+        const expectedActions = [
             {
-                type: 'ADD_SESSION',
+                type: 'SET_SESSION',
                 payload: { token: '<newToken>', apis: ['...apis'] }
             }
         ]
-        expect(store.getActions()).toEqual(expected)
+        expect(store.getActions()).toEqual(expectedActions)
     })
 
     it('if there is no token in storage, the one in response is used', async () => {
@@ -70,13 +70,13 @@ describe('initSession', () => {
             response: { token: '<newToken>', apis: ['...apis'] }
         })
         await store.dispatch(initSession())
-        const expected = [
+        const expectedActions = [
             {
-                type: 'ADD_SESSION',
+                type: 'SET_SESSION',
                 payload: { token: '<newToken>', apis: ['...apis'] }
             }
         ]
-        expect(store.getActions()).toEqual(expected)
+        expect(store.getActions()).toEqual(expectedActions)
     })
 })
 
@@ -97,7 +97,7 @@ describe('endSession', () => {
                 payload: 'reddit'
             },
             {
-                type: 'ADD_SESSION',
+                type: 'SET_SESSION',
                 payload: { token: '<token>', apis: ['...apis'] }
             }
         ]
@@ -113,16 +113,16 @@ describe('endSession', () => {
             response: { token: '<newToken>', apis: ['...apis'] }
         })
         await store.dispatch(endSession('reddit'))
-        const expected = [
+        const expectedActions = [
             {
                 type: 'REMOVE_API',
                 payload: 'reddit'
             },
             {
-                type: 'ADD_SESSION',
+                type: 'SET_SESSION',
                 payload: { token: '<newToken>', apis: ['...apis'] }
             }
         ]
-        expect(store.getActions()).toEqual(expected)
+        expect(store.getActions()).toEqual(expectedActions)
     })
 })

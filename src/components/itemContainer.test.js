@@ -12,41 +12,52 @@ const mockStore = configureMockStore(middlewares)
 
 describe('ItemContainer', () => {
 
-    it('handles no content', () => {
-        const state = { apis: [] }
+    it('handles no session (server down)', () => {
+        const state = { session: '', apis: [] }
         const store = mockStore(state)
-        const container = mount(<Provider store={store}><ItemContainer/></Provider>)
-        expect(container.find('div').at(1).text()).toBe('give permits to fill feed')
+        const container = mount(<Provider store={store}><ItemContainer /></Provider>)
+        expect(container.find('div').text()).toBe('service unavailable')
+    })
+
+    it('handles no content', () => {
+        const state = { session: {}, apis: [] }
+        const store = mockStore(state)
+        const container = mount(<Provider store={store}><ItemContainer /></Provider>)
+        expect(container.find('div').text()).toBe('give permissions to fill feed')
     })
 
     it('handles unknown content', () => {
-        const state = { apis: [
-            { 
-                api: 'unknown', 
-                items: [
-                    { something: 'weird' }
-                ]
-            }
-        ] }
+        const state = {
+            session: {},
+            apis: [
+                {
+                    api: 'unknown',
+                    items: [
+                        { something: 'weird' }
+                    ]
+                }
+            ]
+        }
         const store = mockStore(state)
-        const container = mount(<Provider store={store}><ItemContainer/></Provider>)
+        const container = mount(<Provider store={store}><ItemContainer /></Provider>)
         expect(container.find('p').at(0).text()).toBe('unknown')
     })
 
     it('handles content', () => {
         const state = {
+            session: {},
             apis: [
                 {
                     api: 'reddit',
                     items: [
-                        { 
+                        {
                             id: '1',
                             api: 'reddit',
                             object: {
                                 data: {
                                     title: 'a funny post'
                                 }
-                            } 
+                            }
                         }
                     ]
                 },
@@ -63,7 +74,8 @@ describe('ItemContainer', () => {
             ]
         }
         const store = mockStore(state)
-        const container = mount(<Provider store={store}><ItemContainer/></Provider>)
+        const container = mount(<Provider store={store}><ItemContainer /></Provider>)
+        expect(container.find('p').length).toBe(2)
         expect(container.find('p').at(0).text()).toBe('a funny post')
         expect(container.find('p').at(1).text()).toBe('a video')
     })

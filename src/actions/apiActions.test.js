@@ -27,7 +27,7 @@ describe('initApis', () => {
             },
             apis: []
         })
-        const expected = [
+        const expectedAction = [
             {
                 type: 'ADD_API',
                 payload: {
@@ -52,6 +52,6 @@ describe('initApis', () => {
             response: ['reddit']
         })
         await store.dispatch(initApis())
-        expect(store.getActions()).toEqual(expected)
+        expect(store.getActions()).toEqual(expectedAction)
     })
 })

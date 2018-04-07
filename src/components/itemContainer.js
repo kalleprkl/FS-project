@@ -3,19 +3,24 @@ import { connect } from 'react-redux'
 import Youtube from './youtube'
 import Reddit from './reddit'
 
-const ItemContainer = ({ apis }) => {
+const ItemContainer = ({ session, apis }) => {
+
+    if (!session) {
+        return <div>service unavailable</div>
+    }
+
+    if (apis.length === 0) {
+        return <div>give permissions to fill feed</div>
+    }
 
     let container = []
     apis.map(api => container = [...container, ...api.items])
-    
+
     return (
         <div style={{ minHeight: 500, minWidth: 500 }}>
-            {container.length > 0 ?
-                container.map(item => {
-                    return createItem(item)}) 
-                : 
-                <div>give permits to fill feed</div>
-            }
+            {container.map(item => {
+                return createItem(item)
+            })}
         </div>
     )
 }
@@ -51,6 +56,7 @@ const border2 = {
 
 const mapStateToProps = (state) => {
     return {
+        session: state.session,
         apis: state.apis
     }
 }

@@ -25,7 +25,7 @@ const LeftMenu = ({ session, endSession }) => {
             </Menu>
         )
     }
-    return <Menu>loading</Menu>
+    return <Menu></Menu>
 }
 
 const mapStateToProps = (state) => {
