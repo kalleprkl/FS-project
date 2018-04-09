@@ -3,27 +3,24 @@ import { configure } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
 import moxios from 'moxios'
 import initStore from './store'
-
-import { mockStore } from './test_helpers/mockStore'
 import { getLocalStorageMock } from './test_helpers/localStorageMock'
-import { mountApp } from './test_helpers/mountApp'
+import { mountApp, asyncFlush } from './test_helpers/mountApp'
 
 configure({ adapter: new Adapter() })
 
 const localStorageMock = getLocalStorageMock()
 
 beforeEach(() => {
-    moxios.install() 
+    moxios.install()
 })
 
 afterEach(() => {
     moxios.uninstall()
 })
 
-/* Not really happy with these,
-Would need a way to re-render the mounted app to observe true integration */
+//This really needs refactoring
 
-describe('on initialization, server responses result in a correct state', () => {
+describe('on initialization, server responses result in a correct state and view', () => {
 
     it('no active session for token found in local storage', async () => {
         localStorageMock.getItem.mockReturnValueOnce(JSON.stringify({ token: '<token>' }))
@@ -32,25 +29,29 @@ describe('on initialization, server responses result in a correct state', () => 
             response: {
                 token: '<new_token>',
                 apis: [
-                    { api: 'youtube', authUrl: '<auth_url>' },
-                    { api: "reddit", authUrl: '<auth_url>' }
+                    { api: 'youtube', authUrl: '<youtube_auth_url>' },
+                    { api: "reddit", authUrl: '<reddit_auth_url>' }
                 ]
             }
         })
 
         const store = initStore()
         const app = await mountApp(store)
+        app.update()
         const expectedState = {
             session: {
                 token: '<new_token>',
                 apis: [
-                    { api: 'youtube', authUrl: '<auth_url>' },
-                    { api: 'reddit', authUrl: '<auth_url>' }
+                    { api: 'youtube', authUrl: '<youtube_auth_url>' },
+                    { api: 'reddit', authUrl: '<reddit_auth_url>' }
                 ]
             },
             apis: []
         }
         expect(store.getState()).toEqual(expectedState)
+        expect(app.find({ href: '<youtube_auth_url>' }).at(0).text()).toBe('youtube')
+        expect(app.find({ href: '<reddit_auth_url>' }).at(0).text()).toBe('reddit')
+        expect(app.find('Feed').text()).toBe('give permissions to fill feed')
     })
 
     it('active session for youtube for found token', async () => {
@@ -60,7 +61,7 @@ describe('on initialization, server responses result in a correct state', () => 
             response: {
                 apis: [
                     { api: 'youtube', authUrl: '' },
-                    { api: "reddit", authUrl: '<auth_url>' }
+                    { api: "reddit", authUrl: '<reddit_auth_url>' }
                 ]
             }
         })
@@ -70,12 +71,13 @@ describe('on initialization, server responses result in a correct state', () => 
         })
         const store = initStore()
         const app = await mountApp(store)
+        app.update()
         const expectedState = {
             session: {
                 token: '<token>',
                 apis: [
                     { api: 'youtube', authUrl: '' },
-                    { api: 'reddit', authUrl: '<auth_url>' }
+                    { api: 'reddit', authUrl: '<reddit_auth_url>' }
                 ]
             },
             apis: [
@@ -86,6 +88,9 @@ describe('on initialization, server responses result in a correct state', () => 
             ]
         }
         expect(store.getState()).toEqual(expectedState)
+        expect(app.find({ href: '<reddit_auth_url>' }).at(0).text()).toBe('reddit')
+        expect(app.find('MenuItem').at(0).text()).toBe('youtube logout')
+        expect(app.find('Feed').text()).toBe('1234')
     })
 
     it('active session for reddit for found token', async () => {
@@ -94,7 +99,7 @@ describe('on initialization, server responses result in a correct state', () => 
             status: 200,
             response: {
                 apis: [
-                    { api: 'youtube', authUrl: '<auth_url>' },
+                    { api: 'youtube', authUrl: '<youtube_auth_url>' },
                     { api: "reddit", authUrl: '' }
                 ]
             }
@@ -102,16 +107,17 @@ describe('on initialization, server responses result in a correct state', () => 
         moxios.stubRequest('/data/reddit', {
             status: 200,
             response: [
-                { data: { title: 'a funny post' } }
+                { data: { title: 'post title' } }
             ]
         })
         const store = initStore()
         const app = await mountApp(store)
+        app.update()
         const expectedState = {
             session: {
                 token: '<token>',
                 apis: [
-                    { api: 'youtube', authUrl: '<auth_url>' },
+                    { api: 'youtube', authUrl: '<youtube_auth_url>' },
                     { api: 'reddit', authUrl: '' }
                 ]
             },
@@ -124,7 +130,7 @@ describe('on initialization, server responses result in a correct state', () => 
                             api: 'reddit',
                             object: {
                                 data: {
-                                    title: 'a funny post'
+                                    title: 'post title'
                                 }
                             }
                         }
@@ -133,6 +139,9 @@ describe('on initialization, server responses result in a correct state', () => 
             ]
         }
         expect(store.getState()).toEqual(expectedState)
+        expect(app.find({ href: '<youtube_auth_url>' }).at(0).text()).toBe('youtube')
+        expect(app.find('MenuItem').at(1).text()).toBe('reddit logout')
+        expect(app.find('Feed').text()).toBe('post title')
     })
 
     it('active for both', async () => {
@@ -153,11 +162,12 @@ describe('on initialization, server responses result in a correct state', () => 
         moxios.stubRequest('/data/reddit', {
             status: 200,
             response: [
-                { data: { title: 'a funny post' } }
+                { data: { title: 'post title' } }
             ]
         })
         const store = initStore()
         const app = await mountApp(store)
+        app.update()
         const expectedState = {
             session: {
                 token: '<token>',
@@ -179,7 +189,7 @@ describe('on initialization, server responses result in a correct state', () => 
                             api: 'reddit',
                             object: {
                                 data: {
-                                    title: 'a funny post'
+                                    title: 'post title'
                                 }
                             }
                         }
@@ -188,65 +198,110 @@ describe('on initialization, server responses result in a correct state', () => 
             ]
         }
         expect(store.getState()).toEqual(expectedState)
+        expect(app.find('MenuItem').at(0).text()).toBe('youtube logout')
+        expect(app.find('MenuItem').at(1).text()).toBe('reddit logout')
+        expect(app.find('FeedEvent').at(0).text()).toBe('1234')
+        expect(app.find('FeedEvent').at(1).text()).toBe('post title')
     })
 })
 
-describe('a view corresponding to the state is rendered', () => {
-
-    it('', async () => {
-        const state = {
-            session: {
-                apis: [
-                    { api: 'youtube', authUrl: '<youtube_auth_url>' },
-                    { api: 'reddit', authUrl: '<reddit_auth_url>' }
-                ]
-            },
-            apis: []
-        }
-        const store = mockStore(state)
-        const app = await mountApp(store)
-        expect(app.find({ href: '<youtube_auth_url>' }).at(0).text()).toBe('youtube')
-        expect(app.find({ href: '<reddit_auth_url>' }).at(0).text()).toBe('reddit')
-        expect(app.find('Feed').text()).toBe('give permissions to fill feed')
-    })
-
-    it('', async () => {
-        const state = {
-            session: {
+describe('logout', () => {
+    
+    it('logs out', async () => {
+        localStorageMock.getItem.mockReturnValueOnce(JSON.stringify({ token: '<token>' }))
+        moxios.stubRequest('/auth', {
+            status: 200,
+            response: {
                 apis: [
                     { api: 'youtube', authUrl: '' },
-                    { api: 'reddit', authUrl: '<reddit_auth_url>' }
+                    { api: "reddit", authUrl: '' }
                 ]
-            },
-            apis: [
-                { api: 'youtube', items: [{ id: '1', api: 'youtube', object: 'video_id' }] }
+            }
+        })
+        moxios.stubRequest('/data/youtube', {
+            status: 200,
+            response: ['1234']
+        })
+        moxios.stubRequest('/data/reddit', {
+            status: 200,
+            response: [
+                { data: { title: 'post title' } }
             ]
-        }
-        const store = mockStore(state)
+        })
+        const store = initStore()
         const app = await mountApp(store)
-        expect(app.find('MenuItem').at(0).text()).toBe('youtube logout')
-        expect(app.find({ href: '<reddit_auth_url>' }).at(0).text()).toBe('reddit')
-        expect(app.find('Feed').text()).toBe('video_id')
-    })
-
-    it('', async () => {
-        const state = {
+        app.update()
+        const before = {
             session: {
+                token: '<token>',
                 apis: [
                     { api: 'youtube', authUrl: '' },
                     { api: 'reddit', authUrl: '' }
                 ]
             },
             apis: [
-                { api: 'youtube', items: [{ id: '1', api: 'youtube', object: 'video_id' }] },
-                { api: 'reddit', items: [{ id: '2', api: 'reddit', object: { data: { title: 'post title' } } }] }
+                {
+                    api: 'youtube',
+                    items: [{ id: expect.any(String), api: 'youtube', object: '1234' }]
+                },
+                {
+                    api: 'reddit',
+                    items: [
+                        {
+                            id: expect.any(String),
+                            api: 'reddit',
+                            object: {
+                                data: {
+                                    title: 'post title'
+                                }
+                            }
+                        }
+                    ]
+                }
             ]
         }
-        const store = mockStore(state)
-        const app = await mountApp(store)
-        expect(app.find('MenuItem').at(0).text()).toBe('youtube logout')
+        expect(store.getState()).toEqual(before)
+        moxios.stubRequest('/auth/logout/youtube', {
+            status: 200,
+            response: {
+                apis: [
+                    { api: 'youtube', authUrl: '<youtube_auth_url>' },
+                    { api: "reddit", authUrl: '' }
+                ]
+            }
+        })
+        app.find('MenuItem').at(0).simulate('click')
+        await asyncFlush()
+        app.update()
+        const after = {
+            session: {
+                token: '<token>',
+                apis: [
+                    { api: 'youtube', authUrl: '<youtube_auth_url>' },
+                    { api: 'reddit', authUrl: '' }
+                ]
+            },
+            apis: [
+                {
+                    api: 'reddit',
+                    items: [
+                        {
+                            id: expect.any(String),
+                            api: 'reddit',
+                            object: {
+                                data: {
+                                    title: 'post title'
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+        expect(store.getState()).toEqual(after)
+        expect(app.find({ href: '<youtube_auth_url>' }).at(0).text()).toBe('youtube')
         expect(app.find('MenuItem').at(1).text()).toBe('reddit logout')
-        expect(app.find('FeedEvent').at(0).text()).toBe('video_id')
-        expect(app.find('FeedEvent').at(1).text()).toBe('post title')
+        expect(app.find('Feed').text()).toBe('post title')
     })
 })
+

@@ -9,4 +9,4 @@ export const mountApp = async (store) => {
     return wrapper
 }
 
-const asyncFlush = () => new Promise(resolve => setTimeout(resolve, 0)) 
+export const asyncFlush = () => new Promise(resolve => setTimeout(resolve, 0)) 
