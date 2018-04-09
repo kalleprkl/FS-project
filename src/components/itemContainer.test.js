@@ -16,14 +16,14 @@ describe('ItemContainer', () => {
         const state = { session: '', apis: [] }
         const store = mockStore(state)
         const container = mount(<Provider store={store}><ItemContainer /></Provider>)
-        expect(container.find('div').text()).toBe('service unavailable')
+        expect(container.find('Feed').text()).toBe('service unavailable')
     })
 
     it('handles no content', () => {
         const state = { session: {}, apis: [] }
         const store = mockStore(state)
         const container = mount(<Provider store={store}><ItemContainer /></Provider>)
-        expect(container.find('div').text()).toBe('give permissions to fill feed')
+        expect(container.find('Feed').text()).toBe('give permissions to fill feed')
     })
 
     it('handles unknown content', () => {
@@ -40,7 +40,7 @@ describe('ItemContainer', () => {
         }
         const store = mockStore(state)
         const container = mount(<Provider store={store}><ItemContainer /></Provider>)
-        expect(container.find('p').at(0).text()).toBe('unknown')
+        expect(container.find('FeedContent').at(0).text()).toBe('unknown')
     })
 
     it('handles content', () => {
@@ -75,8 +75,8 @@ describe('ItemContainer', () => {
         }
         const store = mockStore(state)
         const container = mount(<Provider store={store}><ItemContainer /></Provider>)
-        expect(container.find('p').length).toBe(2)
-        expect(container.find('p').at(0).text()).toBe('a funny post')
-        expect(container.find('p').at(1).text()).toBe('a video')
+        expect(container.find('FeedEvent').length).toBe(2)
+        expect(container.find('FeedEvent').at(0).text()).toBe('a funny post')
+        expect(container.find('FeedEvent').at(1).text()).toBe('a video')
     })
 })

@@ -38,9 +38,8 @@ export const initApis = () => {
                     items
                 }))
             } catch (error) {
-                console.log('api init failed')
+                console.log('api init failure')
             }
-
         })
         await Promise.all(promises)
     }

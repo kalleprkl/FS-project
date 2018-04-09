@@ -9,7 +9,7 @@ const setSessionAction = (session) => {
 }
 
 export const initSession = () => {
-    return async (dispatch) => {
+    return async (dispatch, getState) => {
         const foundSessionJSON = window.localStorage.getItem(`rf-session`)
         let foundToken = ''
         if (foundSessionJSON) {

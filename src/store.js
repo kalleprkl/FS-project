@@ -9,11 +9,14 @@ const reducer = (combineReducers({
     session: sessionReducer
 }))
 
-const store = createStore(
-    reducer,
-    composeWithDevTools(
-        applyMiddleware(thunk)
+const initStore = () => {
+    const store = createStore(
+        reducer,
+        composeWithDevTools(
+            applyMiddleware(thunk)
+        )
     )
-)
+    return store
+}
 
-export default store
+export default initStore
